@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{57444148-4A2C-4440-B448-66EE3C19D0DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilmRecipeLab.Domain", "src\FilmRecipeLab.Domain\FilmRecipeLab.Domain.csproj", "{E1F306C6-FE9E-4283-ACC5-F3EEEC9B8A37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilmRecipeLab.Application", "src\FilmRecipeLab.Application\FilmRecipeLab.Application.csproj", "{6CC48A81-26EE-4993-ACC4-A7F9CDE6AA87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilmRecipeLab.Infrastructure", "src\FilmRecipeLab.Infrastructure\FilmRecipeLab.Infrastructure.csproj", "{F603C14D-5778-4E7E-A189-3E51798D1368}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilmRecipeLab.Presentation", "src\FilmRecipeLab.Presentation\FilmRecipeLab.Presentation.csproj", "{682A43B0-CA98-4E2C-A53E-EE825A05E16E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{49790963-CD33-4974-A667-51B9725CAA87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilmRecipeLab.Tests", "tests\FilmRecipeLab.Tests\FilmRecipeLab.Tests.csproj", "{8AD4DFBE-5077-4394-BE4E-154D2C5BEF05}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1F306C6-FE9E-4283-ACC5-F3EEEC9B8A37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1F306C6-FE9E-4283-ACC5-F3EEEC9B8A37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1F306C6-FE9E-4283-ACC5-F3EEEC9B8A37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1F306C6-FE9E-4283-ACC5-F3EEEC9B8A37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CC48A81-26EE-4993-ACC4-A7F9CDE6AA87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CC48A81-26EE-4993-ACC4-A7F9CDE6AA87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CC48A81-26EE-4993-ACC4-A7F9CDE6AA87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CC48A81-26EE-4993-ACC4-A7F9CDE6AA87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F603C14D-5778-4E7E-A189-3E51798D1368}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F603C14D-5778-4E7E-A189-3E51798D1368}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F603C14D-5778-4E7E-A189-3E51798D1368}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F603C14D-5778-4E7E-A189-3E51798D1368}.Release|Any CPU.Build.0 = Release|Any CPU
+		{682A43B0-CA98-4E2C-A53E-EE825A05E16E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{682A43B0-CA98-4E2C-A53E-EE825A05E16E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{682A43B0-CA98-4E2C-A53E-EE825A05E16E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{682A43B0-CA98-4E2C-A53E-EE825A05E16E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AD4DFBE-5077-4394-BE4E-154D2C5BEF05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AD4DFBE-5077-4394-BE4E-154D2C5BEF05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AD4DFBE-5077-4394-BE4E-154D2C5BEF05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AD4DFBE-5077-4394-BE4E-154D2C5BEF05}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E1F306C6-FE9E-4283-ACC5-F3EEEC9B8A37} = {57444148-4A2C-4440-B448-66EE3C19D0DE}
+		{6CC48A81-26EE-4993-ACC4-A7F9CDE6AA87} = {57444148-4A2C-4440-B448-66EE3C19D0DE}
+		{F603C14D-5778-4E7E-A189-3E51798D1368} = {57444148-4A2C-4440-B448-66EE3C19D0DE}
+		{682A43B0-CA98-4E2C-A53E-EE825A05E16E} = {57444148-4A2C-4440-B448-66EE3C19D0DE}
+		{8AD4DFBE-5077-4394-BE4E-154D2C5BEF05} = {49790963-CD33-4974-A667-51B9725CAA87}
+	EndGlobalSection
+EndGlobal
