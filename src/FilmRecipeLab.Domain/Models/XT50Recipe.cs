@@ -24,29 +24,29 @@ public sealed class XT50Recipe
         Label = label;
         this.properties = new Dictionary<string, string?>(properties, StringComparer.Ordinal);
 
-        FilmSimulation = GetProperty("FilmSimulation") ?? string.Empty;
-        DynamicRange = GetProperty("DynamicRange") ?? string.Empty;
-        ExposureBias = ParseDecimal("ExposureBias");
+        FilmSimulation = GetRequiredProperty("FilmSimulation");
+        DynamicRange = GetRequiredProperty("DynamicRange");
+        ExposureBias = ParseExposureBias(GetProperty("ExposureBias"));
         HighlightTone = ParseDecimal("HighlightTone");
         ShadowTone = ParseDecimal("ShadowTone");
         Color = ParseInt("Color");
         Sharpness = ParseInt("Sharpness");
         NoiseReduction = ParseInt("NoisReduction");
         Clarity = ParseInt("Clarity");
-        WhiteBalance = GetProperty("WhiteBalance") ?? string.Empty;
+        WhiteBalance = GetRequiredProperty("WhiteBalance");
         WhiteBalanceShiftRed = ParseInt("WBShiftR");
         WhiteBalanceShiftBlue = ParseInt("WBShiftB");
-        WhiteBalanceColorTemperature = GetProperty("WBColorTemp") ?? string.Empty;
-        GrainEffect = GetProperty("GrainEffect") ?? string.Empty;
-        GrainEffectSize = GetProperty("GrainEffectSize") ?? string.Empty;
-        ChromeEffect = GetProperty("ChromeEffect") ?? string.Empty;
-        ColorChromeBlue = GetProperty("ColorChromeBlue") ?? string.Empty;
-        SmoothSkinEffect = GetProperty("SmoothSkinEffect") ?? string.Empty;
+        WhiteBalanceColorTemperature = ParseColorTemperature(GetProperty("WBColorTemp"));
+        GrainEffect = GetRequiredProperty("GrainEffect");
+        GrainEffectSize = GetRequiredProperty("GrainEffectSize");
+        ChromeEffect = GetRequiredProperty("ChromeEffect");
+        ColorChromeBlue = GetRequiredProperty("ColorChromeBlue");
+        SmoothSkinEffect = GetRequiredProperty("SmoothSkinEffect");
         BlackImageTone = ParseInt("BlackImageTone");
         MonochromaticColorRedGreen = ParseInt("MonochromaticColor_RG");
-        LensModulationOptimization = GetProperty("LensModulationOpt") ?? string.Empty;
-        ColorSpace = GetProperty("ColorSpace") ?? string.Empty;
-        DigitalTeleConverter = GetProperty("DigitalTeleConv") ?? string.Empty;
+        LensModulationOptimization = GetRequiredProperty("LensModulationOpt");
+        ColorSpace = GetRequiredProperty("ColorSpace");
+        DigitalTeleConverter = "OFF";
     }
 
     public string ProfileVersion { get; }
@@ -79,7 +79,7 @@ public sealed class XT50Recipe
 
     public int? WhiteBalanceShiftBlue { get; set; }
 
-    public string WhiteBalanceColorTemperature { get; set; }
+    public int? WhiteBalanceColorTemperature { get; set; }
 
     public string GrainEffect { get; set; }
 
@@ -99,7 +99,7 @@ public sealed class XT50Recipe
 
     public string ColorSpace { get; set; }
 
-    public string DigitalTeleConverter { get; set; }
+    public string DigitalTeleConverter { get; }
 
     public IReadOnlyDictionary<string, string?> Properties => properties;
 
@@ -114,9 +114,29 @@ public sealed class XT50Recipe
         properties[name] = value;
     }
 
+    public static readonly IReadOnlySet<string> FilmSimulationCodes = new HashSet<string>(StringComparer.Ordinal)
+    {
+        "Provia", "Velvia", "Astia", "Classic", "Reala", "NEGAhi", "NEGAStd",
+        "ClassicNEGA", "NostalgicNEGA", "Eterna", "BleachBypass", "Acros", "AcrosYe",
+        "AcrosG", "AcrosR", "BW", "BYe", "BG", "Sepia"
+    };
+
+    public static readonly IReadOnlySet<string> WhiteBalanceCodes = new HashSet<string>(StringComparer.Ordinal)
+    {
+        "INVALID", "Auto", "Auto_Ambience", "Auto_White", "Custom1", "Custom2", "Custom3",
+        "Daylight", "FLight1", "FLight2", "FLight3", "Incand", "Shade", "Temperature", "UWater"
+    };
+
+    private string GetRequiredProperty(string name)
+    {
+        return GetProperty(name) ?? string.Empty;
+    }
+
     private int? ParseInt(string name)
     {
-        return int.TryParse(GetProperty(name), out var value) ? value : null;
+        return int.TryParse(GetProperty(name), NumberStyles.Integer, CultureInfo.InvariantCulture, out var value)
+            ? value
+            : null;
     }
 
     private decimal? ParseDecimal(string name)
@@ -127,6 +147,48 @@ public sealed class XT50Recipe
             CultureInfo.InvariantCulture,
             out var value)
             ? value
+            : null;
+    }
+
+    private static decimal? ParseExposureBias(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        if (decimal.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out var numericValue))
+        {
+            return numericValue;
+        }
+
+        var sign = value[0] switch
+        {
+            'P' => 1m,
+            'M' => -1m,
+            _ => 0m
+        };
+
+        if (sign == 0m || value.Length < 4 || value[2] != 'P')
+        {
+            return null;
+        }
+
+        return decimal.TryParse(value[1..2], NumberStyles.Integer, CultureInfo.InvariantCulture, out var major)
+            && decimal.TryParse(value[3..], NumberStyles.Integer, CultureInfo.InvariantCulture, out var minor)
+            ? sign * (major + minor / 100m)
+            : null;
+    }
+
+    private static int? ParseColorTemperature(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value) || !value.EndsWith('K'))
+        {
+            return null;
+        }
+
+        return int.TryParse(value[..^1], NumberStyles.Integer, CultureInfo.InvariantCulture, out var kelvin)
+            ? kelvin
             : null;
     }
 }

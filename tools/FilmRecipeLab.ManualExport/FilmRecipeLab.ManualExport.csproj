@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FilmRecipeLab.Domain\FilmRecipeLab.Domain.csproj" />
+    <ProjectReference Include="..\..\src\FilmRecipeLab.Application\FilmRecipeLab.Application.csproj" />
+    <ProjectReference Include="..\..\src\FilmRecipeLab.Infrastructure\FilmRecipeLab.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

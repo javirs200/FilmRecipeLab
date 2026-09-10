@@ -1,18 +1,21 @@
 # FlimRecipe LAb
 
 ## Objetivo
--Aplicación de escritorio para gestionar y editar recetas de la Fujifilm X-T50,
--Almacenadas en archivos xml de "Fujifilm RAW Studio" ,  ver Resources/DemoFile.FP1
--Editar/crear nuevas recetas con una interfaz visual intuitiva
--Capcidad de importar recetas desde capturas de pantalla mediante OCR
+- Aplicación de escritorio para gestionar y editar recetas de la Fujifilm X-T50.
+- Las recetas se almacenan en archivos XML `.FP1` de Fujifilm RAW Studio.
+- Permite importar perfiles existentes, editarlos y exportarlos conservando la estructura del perfil.
+- Permitirá importar recetas desde capturas de pantalla mediante OCR en una fase posterior.
 
 ## Alcance version inicial
--Aplicación de escritorio para gestionar y editar recetas de la Fujifilm X-T50,
--Almacenadas en archivos xml de "Fujifilm RAW Studio" ,  ver Resources/DemoFile.FP1
--Editar/crear nuevas recetas con una interfaz visual intuitiva
+- Aplicación de escritorio para Windows 11 mediante WPF sobre C#/.NET.
+- Carga de uno o varios perfiles `.FP1` de la Fujifilm X-T50.
+- Modelo de receta tipado para los parámetros definidos.
+- Exportación de perfiles modificados a `.FP1`.
+- Conservación de propiedades XML que todavía no forman parte del modelo editable.
+- Validación manual realizada: el XML generado se abre correctamente en Fujifilm RAW Studio.
 
 ## Fuera de alcance
--Capcidad de importar recetas desde capturas de pantalla mediante OCR
+- Importación de recetas desde capturas de pantalla mediante OCR.
 
 ## Reglas y restricciones
 - Rendimiento aceptable
@@ -22,6 +25,19 @@
 - No se requiere compatibilidad genérica con otras cámaras Fujifilm
 - Framework previsto, WPF sobre C#/.NET
 - Arquitectura, separación Model-View-ViewModel con servicios independientes por funcionalidad
+
+## Estado actual
+
+- Lector `.FP1` implementado para cargar perfiles desde streams o rutas de archivo.
+- Carga múltiple implementada mediante `ReadMany`.
+- Modelo `XT50Recipe` implementado con propiedades tipadas para la X-T50.
+- Escritor `.FP1` implementado para streams o rutas de archivo.
+- Conversión de `ExposureBias` implementada entre valores decimales y códigos FP1, por ejemplo `0.67` <-> `P0P67` y `-2` <-> `M2P00`.
+- Conversión de temperatura implementada entre Kelvin y el formato XML, por ejemplo `9000` <-> `9000K`.
+- `DigitalTeleConv` se fuerza siempre a `OFF` durante la exportación.
+- Las propiedades XML desconocidas se conservan durante la exportación.
+- El XML generado ha sido probado manualmente y funciona correctamente en Fujifilm RAW Studio.
+- Pruebas automatizadas de lector y escritor implementadas.
 
 ## Modelo de receta
 Los metadatos identificativos del archivo se conservan durante la importación y exportación, pero no forman parte de la receta editable:
@@ -42,7 +58,7 @@ Parámetros editables de la receta:
 | `FilmSimulation` | Código/opción | `Provia`,`Velvia`,`Astia`,`Classic`,`Reala`,`NEGAhi`,`NEGAStd`,`ClassicNEGA`,`NostalgicNEGA`,`Eterna`,`BleachBypass`,`Acros`,`AcrosYe`,`AcrosG`,`AcrosR`,`BW`,`BYe`,`BG`,`Sepia` | - | `Provia` | Son los códigos internos observados en los perfiles FP1. La etiqueta visible de la cámara puede ser distinta. |
 | `DynamicRange` | Entero/opción | `100`,`200`,`400` | - | `400` | Valores observados en los perfiles. `AUTO` queda pendiente de confirmar en el XML. |
 | `WideDRange` | Entero/opción | Pendiente | Pendiente | `0` | Rango dinámico ampliado (no lo veo en la camara )|
-| `ExposureBias` | Código/número | `-2` a `+3` | `1/3` | `0` | Rango visible en la X-T50. El XML codifica el signo y el valor como texto: `P0P00` = `0`, `P0P33` = `+1/3`, `P0P67` = `+2/3`, `P1P00` = `+1`, `P1P33` = `+1 1/3`, `P3P00` = `+3`, `M0P67` = `-2/3` y `M2P00` = `-2`. |
+| `ExposureBias` | Código/número | `-2` a `+3` | `1/3` | `0` | Rango visible en la X-T50. El XML codifica el signo y el valor como texto: `P0P00` = `0`, `P0P33` = `+1/3`, `P0P67` = `+2/3`, `P1P00` = `+1`, `P1P33` = `+1 1/3`, `P3P00` = `+3`, `M0P67` = `-2/3` y `M2P00` = `-2`. La conversión de lectura y escritura está implementada. |
 | `HighlightTone` | Número | `-2`,`4` | `0,5`  | `0` | Tono de altas luces |
 | `ShadowTone` | Número | `-2`,`4` | `0,5`  | `0` | Tono de sombras |
 | `Color` | Número | `-4`,`4` | `1` | `0` | Saturación/color |
@@ -52,7 +68,7 @@ Parámetros editables de la receta:
 | `WhiteBalance` | Código/opción | `INVALID`,`Auto`,`Auto_Ambience`,`Auto_White`,`Custom1`,`Custom2`,`Custom3`,`Daylight`,`FLight1`,`FLight2`,`FLight3`,`Incand`,`Shade`,`Temperature`,`UWater` | - | `INVALID` | Códigos internos observados en los perfiles. |
 | `WBShiftR` | Número | `-9`,`9` | `1` | `0` | Ajuste de balance hacia rojo |
 | `WBShiftB` | Número | `-9`,`9` | `1` | `0` | Ajuste de balance hacia azul |
-| `WBColorTemp` | Temperatura (Kelvin) | `0K` o de `10000K` a `2500K` | `100k` | `0K` | Temperatura de la luz. cuando se utiliza WhiteBalance -> Temperature  -> `10000K` a `2500K` sino `0K` |
+| `WBColorTemp` | Temperatura (Kelvin) | `0K` o de `2500K` a `10000K` | `100K` | `0K` | Temperatura de la luz cuando `WhiteBalance` es `Temperature`; en otro caso se utiliza `0K`. La conversión de lectura y escritura está implementada. |
 | `GrainEffect` | Opción | `OFF`,`STRONG`,`WEAK` | - | `OFF` | Valores observados en los perfiles. |
 | `GrainEffectSize` | Opción | `LARGE`,`SMALL` | - | `SMALL` | Tamaño del grano |
 | `ChromeEffect` | Opción | `OFF`,`STRONG` | - | `OFF` | Valores observados en los perfiles. `WEAK` no aparece en los ejemplos. |

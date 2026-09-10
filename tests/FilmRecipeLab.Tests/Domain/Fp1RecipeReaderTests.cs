@@ -86,4 +86,44 @@ public sealed class Fp1RecipeReaderTests
         Assert.All(recipes, recipe => Assert.Equal("X-T50", recipe.Device));
         Assert.NotSame(recipes[0], recipes[1]);
       }
+
+      [Theory]
+      [InlineData("P0P67", 0.67)]
+      [InlineData("M2P00", -2)]
+      [InlineData("P3P00", 3)]
+      public void Read_Decodes_ExposureBias_Code(string code, decimal expected)
+      {
+        var xml = CreateProfileXml($"<ExposureBias>{code}</ExposureBias>");
+        using var source = new MemoryStream(Encoding.UTF8.GetBytes(xml));
+
+        var recipe = new Fp1RecipeReader().Read(source);
+
+        Assert.Equal(expected, recipe.ExposureBias);
+      }
+
+      [Fact]
+      public void Read_Converts_Color_Temperature_To_Kelvin()
+      {
+        var xml = CreateProfileXml("<WBColorTemp>9000K</WBColorTemp>");
+        using var source = new MemoryStream(Encoding.UTF8.GetBytes(xml));
+
+        var recipe = new Fp1RecipeReader().Read(source);
+
+        Assert.Equal(9000, recipe.WhiteBalanceColorTemperature);
+      }
+
+      private static string CreateProfileXml(string property)
+      {
+        return $"""
+          <ConversionProfile>
+            <PropertyGroup device="X-T50" version="X-T50_0100" label="TestRecipe">
+            <FilmSimulation>Sepia</FilmSimulation>
+            <DynamicRange>400</DynamicRange>
+            {property}
+            <WhiteBalance>Temperature</WhiteBalance>
+            <DigitalTeleConv>2</DigitalTeleConv>
+            </PropertyGroup>
+          </ConversionProfile>
+          """;
+      }
 }
