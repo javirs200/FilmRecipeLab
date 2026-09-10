@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "FilmRecipeLab: ejecutar WPF",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/FilmRecipeLab.Presentation/bin/Debug/net8.0-windows/FilmRecipeLab.Presentation.exe",
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "FilmRecipeLab: compilar solución",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
+            "name": "FilmRecipeLab: ejecutar con dotnet",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "dotnet",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/src/FilmRecipeLab.Presentation/FilmRecipeLab.Presentation.csproj",
+                "--no-restore"
+            ],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "FilmRecipeLab: restaurar y compilar solución",
+            "stopAtEntry": false,
+            "console": "integratedTerminal"
+        }
+    ]
+}

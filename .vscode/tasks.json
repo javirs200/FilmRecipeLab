@@ -1,0 +1,42 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "FilmRecipeLab: compilar solución",
+            "type": "process",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "${workspaceFolder}/FilmRecipeLab.sln",
+                "--no-restore"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "FilmRecipeLab: restaurar y compilar solución",
+            "type": "process",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "${workspaceFolder}/FilmRecipeLab.sln"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "FilmRecipeLab: ejecutar tests",
+            "type": "process",
+            "command": "dotnet",
+            "args": [
+                "test",
+                "${workspaceFolder}/FilmRecipeLab.sln",
+                "--no-restore"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": "test"
+        }
+    ]
+}

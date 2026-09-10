@@ -103,6 +103,37 @@ public sealed class XT50Recipe
 
     public IReadOnlyDictionary<string, string?> Properties => properties;
 
+    public XT50Recipe Clone()
+    {
+        var clone = new XT50Recipe(ProfileVersion, Device, Label, Properties)
+        {
+            FilmSimulation = FilmSimulation,
+            DynamicRange = DynamicRange,
+            ExposureBias = ExposureBias,
+            HighlightTone = HighlightTone,
+            ShadowTone = ShadowTone,
+            Color = Color,
+            Sharpness = Sharpness,
+            NoiseReduction = NoiseReduction,
+            Clarity = Clarity,
+            WhiteBalance = WhiteBalance,
+            WhiteBalanceShiftRed = WhiteBalanceShiftRed,
+            WhiteBalanceShiftBlue = WhiteBalanceShiftBlue,
+            WhiteBalanceColorTemperature = WhiteBalanceColorTemperature,
+            GrainEffect = GrainEffect,
+            GrainEffectSize = GrainEffectSize,
+            ChromeEffect = ChromeEffect,
+            ColorChromeBlue = ColorChromeBlue,
+            SmoothSkinEffect = SmoothSkinEffect,
+            BlackImageTone = BlackImageTone,
+            MonochromaticColorRedGreen = MonochromaticColorRedGreen,
+            LensModulationOptimization = LensModulationOptimization,
+            ColorSpace = ColorSpace
+        };
+
+        return clone;
+    }
+
     public string? GetProperty(string name)
     {
         return properties.TryGetValue(name, out var value) ? value : null;
