@@ -52,11 +52,11 @@ public sealed class Fp1RecipeReaderTests
       [Fact]
       public void Read_Loads_Reference_Profile()
       {
-        using var source = File.OpenRead(Path.Combine(AppContext.BaseDirectory, "DemoFile.FP1"));
+        using var source = new MemoryStream(Encoding.UTF8.GetBytes(CreateReferenceProfileXml()));
         var recipe = new Fp1RecipeReader().Read(source);
 
         Assert.Equal("X-T50", recipe.Device);
-        Assert.Equal("DisparoOriginalDr400%", recipe.Label);
+        Assert.Equal("ReferenceProfile", recipe.Label);
         Assert.Equal("Provia", recipe.FilmSimulation);
         Assert.Equal("400", recipe.DynamicRange);
         Assert.Equal(0, recipe.ExposureBias);
@@ -77,14 +77,24 @@ public sealed class Fp1RecipeReaderTests
       public void ReadMany_Loads_Each_Profile_Independently()
       {
         var reader = new Fp1RecipeReader();
-        var referenceFile = Path.Combine(AppContext.BaseDirectory, "DemoFile.FP1");
-        var files = new[] { referenceFile, referenceFile };
+        var firstFile = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid():N}.FP1");
+        var secondFile = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid():N}.FP1");
+        File.WriteAllText(firstFile, CreateReferenceProfileXml());
+        File.WriteAllText(secondFile, CreateReferenceProfileXml());
 
-        var recipes = reader.ReadMany(files);
+        try
+        {
+          var recipes = reader.ReadMany(new[] { firstFile, secondFile });
 
-        Assert.Equal(2, recipes.Count);
-        Assert.All(recipes, recipe => Assert.Equal("X-T50", recipe.Device));
-        Assert.NotSame(recipes[0], recipes[1]);
+          Assert.Equal(2, recipes.Count);
+          Assert.All(recipes, recipe => Assert.Equal("X-T50", recipe.Device));
+          Assert.NotSame(recipes[0], recipes[1]);
+        }
+        finally
+        {
+          File.Delete(firstFile);
+          File.Delete(secondFile);
+        }
       }
 
       [Theory]
@@ -122,6 +132,30 @@ public sealed class Fp1RecipeReaderTests
             {property}
             <WhiteBalance>Temperature</WhiteBalance>
             <DigitalTeleConv>2</DigitalTeleConv>
+            </PropertyGroup>
+          </ConversionProfile>
+          """;
+      }
+
+      private static string CreateReferenceProfileXml()
+      {
+        return """
+          <ConversionProfile application="XRFC" version="1.12.0.0">
+            <PropertyGroup device="X-T50" version="X-T50_0100" label="ReferenceProfile">
+              <FilmSimulation>Provia</FilmSimulation>
+              <DynamicRange>400</DynamicRange>
+              <ExposureBias>P0P00</ExposureBias>
+              <HighlightTone>0</HighlightTone>
+              <ShadowTone>0</ShadowTone>
+              <Color>0</Color>
+              <Sharpness>0</Sharpness>
+              <NoisReduction>0</NoisReduction>
+              <Clarity>0</Clarity>
+              <WhiteBalance>INVALID</WhiteBalance>
+              <GrainEffect>OFF</GrainEffect>
+              <GrainEffectSize>SMALL</GrainEffectSize>
+              <ColorSpace>sRGB</ColorSpace>
+              <DigitalTeleConv>OFF</DigitalTeleConv>
             </PropertyGroup>
           </ConversionProfile>
           """;

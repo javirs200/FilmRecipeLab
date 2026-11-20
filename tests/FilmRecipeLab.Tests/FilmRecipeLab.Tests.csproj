@@ -21,10 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\Resources\DemoFile.FP1" Link="DemoFile.FP1" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\src\FilmRecipeLab.Domain\FilmRecipeLab.Domain.csproj" />
     <ProjectReference Include="..\..\src\FilmRecipeLab.Application\FilmRecipeLab.Application.csproj" />
     <ProjectReference Include="..\..\src\FilmRecipeLab.Infrastructure\FilmRecipeLab.Infrastructure.csproj" />
