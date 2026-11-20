@@ -9,21 +9,29 @@
     <Window.Resources>
         <local:NumericValueConverter x:Key="NumericValueConverter" />
         <local:ExposureBiasDisplayConverter x:Key="ExposureBiasDisplayConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
     <DockPanel Margin="18">
         <Border DockPanel.Dock="Top" Background="#243447" CornerRadius="6" Padding="14" Margin="0,0,0,14">
             <StackPanel>
                 <DockPanel>
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
-                        <Button Content="Guardar" Click="SaveProfile_Click" Padding="18,8" />
+                        <Button Content="Guardar copia nueva" Click="SaveCopy_Click" Padding="14,8" Margin="0,0,8,0" />
+                        <Button Content="Actualizar" Click="UpdateProfile_Click" Padding="14,8" ToolTip="Sobrescribe el archivo seleccionado" />
                     </StackPanel>
-                    <TextBlock Text="{Binding StatusMessage}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Right" />
+                    <Button Click="ReloadFolder_Click" DockPanel.Dock="Right" Width="38" Height="32" Padding="0" ToolTip="Recargar perfiles de la carpeta" AutomationProperties.Name="Recargar perfiles">
+                        <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Button>
+                    <TextBlock Text="{Binding StatusMessage}" Foreground="White" VerticalAlignment="Center" Margin="12,0" />
                 </DockPanel>
                 <DockPanel Margin="0,12,0,0">
                     <TextBlock Text="Carpeta FP1:" Foreground="White" VerticalAlignment="Center" Margin="0,0,8,0" />
                     <Button Content="Seleccionar..." Click="ChooseFolder_Click" DockPanel.Dock="Right" Padding="12,6" Margin="8,0,0,0" />
                     <TextBox Text="{Binding ConfiguredFolder, Mode=OneWay}" IsReadOnly="True" VerticalContentAlignment="Center" />
                 </DockPanel>
+                <TextBlock Margin="0,6,0,0" Foreground="#D5DEE8" FontSize="11" TextWrapping="Wrap">
+                    RAW STUDIO guarda perfiles bajo %LOCALAPPDATA%\com.fujifilm.denji\X_RAW_STUDIO. Para la X-T50, selecciona X-T50\X-T50_0100.
+                </TextBlock>
             </StackPanel>
         </Border>
 
@@ -34,8 +42,33 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <GroupBox Header="Perfiles cargados" Grid.Column="0">
-                <ListBox ItemsSource="{Binding Recipes}" SelectedItem="{Binding SelectedRecipe}" DisplayMemberPath="Label" />
+            <GroupBox Grid.Column="0">
+                <GroupBox.Header>
+                    <DockPanel LastChildFill="False">
+                        <TextBlock Text="Perfiles cargados" VerticalAlignment="Center" />
+                        <Button Content="Quitar" Click="RemoveRecipe_Click" Margin="8,0,0,0" Padding="8,2" ToolTip="Borra el archivo FP1 después de confirmar" />
+                    </DockPanel>
+                </GroupBox.Header>
+                <ListBox ItemsSource="{Binding Recipes}" SelectedItem="{Binding SelectedEntry}" PreviewKeyDown="RecipeList_PreviewKeyDown">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Margin="2,5">
+                                <Ellipse DockPanel.Dock="Left"
+                                         Width="8"
+                                         Height="8"
+                                         Margin="0,2,8,0"
+                                         VerticalAlignment="Top"
+                                         Fill="#2474D2"
+                                         Visibility="{Binding HasChanges, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                         ToolTip="Cambios pendientes de guardar o actualizar" />
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Label}" FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding FileName}" FontSize="11" Foreground="#68737D" />
+                                </StackPanel>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </GroupBox>
 
             <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">

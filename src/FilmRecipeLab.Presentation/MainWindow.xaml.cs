@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
+using System.Windows.Input;
 using FilmRecipeLab.Domain.Models;
 using FilmRecipeLab.Presentation.ViewModels;
 using Microsoft.Win32;
@@ -10,6 +12,11 @@ namespace FilmRecipeLab.Presentation;
 /// </summary>
 public partial class MainWindow : Window
 {
+    public static string RawStudioRootFolder => Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "com.fujifilm.denji",
+        "X_RAW_STUDIO");
+
     public static IReadOnlyList<string> FilmSimulationCodes => XT50Recipe.FilmSimulationCodes.ToArray();
 
     public static IReadOnlyList<string> WhiteBalanceCodes => XT50Recipe.WhiteBalanceCodes.ToArray();
@@ -36,7 +43,8 @@ public partial class MainWindow : Window
         var dialog = new OpenFolderDialog
         {
             Title = "Seleccionar carpeta de perfiles FP1",
-            Multiselect = false
+            Multiselect = false,
+            InitialDirectory = Directory.Exists(RawStudioRootFolder) ? RawStudioRootFolder : null
         };
 
         if (dialog.ShowDialog() != true)
@@ -55,21 +63,118 @@ public partial class MainWindow : Window
         }
     }
 
-    private void SaveProfile_Click(object sender, RoutedEventArgs e)
+    private void SaveCopy_Click(object sender, RoutedEventArgs e)
     {
         if (viewModel.SelectedRecipe is null)
         {
-            MessageBox.Show(this, "Selecciona primero un perfil.", "Guardar perfil", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(this, "Selecciona primero un perfil.", "Guardar copia", MessageBoxButton.OK, MessageBoxImage.Information);
             return;
         }
 
         try
         {
-            viewModel.SaveSelectedProfile();
+            viewModel.SaveSelectedProfileAsCopy();
         }
         catch (Exception exception)
         {
-            MessageBox.Show(this, exception.Message, "No se pudo guardar el perfil", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(this, exception.Message, "No se pudo guardar la copia", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void ReloadFolder_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            viewModel.ScanConfiguredFolder();
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show(this, exception.Message, "No se pudo recargar la carpeta", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void UpdateProfile_Click(object sender, RoutedEventArgs e)
+    {
+        ConfirmAndUpdateSelectedProfile();
+    }
+
+    private void RemoveRecipe_Click(object sender, RoutedEventArgs e)
+    {
+        ConfirmAndDeleteSelectedRecipe();
+    }
+
+    private void RecipeList_PreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key != Key.Delete)
+        {
+            return;
+        }
+
+        ConfirmAndDeleteSelectedRecipe();
+        e.Handled = true;
+    }
+
+    private void ConfirmAndDeleteSelectedRecipe()
+    {
+        var recipe = viewModel.SelectedRecipe;
+        var filePath = viewModel.GetSelectedRecipeFilePath();
+        if (recipe is null || filePath is null)
+        {
+            return;
+        }
+
+        var confirmation = MessageBox.Show(
+            this,
+            $"¿Quieres borrar la receta '{recipe.Label}' y su archivo?\n\n{filePath}\n\nEsta acción no se puede deshacer.",
+            "Confirmar borrado",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning,
+            MessageBoxResult.No);
+
+        if (confirmation != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
+        try
+        {
+            viewModel.DeleteSelectedRecipeFileAndRemove();
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show(this, exception.Message, "No se pudo borrar el perfil", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private void ConfirmAndUpdateSelectedProfile()
+    {
+        var recipe = viewModel.SelectedRecipe;
+        var filePath = viewModel.GetSelectedRecipeFilePath();
+        if (recipe is null || filePath is null)
+        {
+            return;
+        }
+
+        var confirmation = MessageBox.Show(
+            this,
+            $"¿Quieres actualizar '{recipe.Label}' sobrescribiendo este archivo?\n\n{filePath}",
+            "Confirmar actualización",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning,
+            MessageBoxResult.No);
+
+        if (confirmation != MessageBoxResult.Yes)
+        {
+            return;
+        }
+
+        try
+        {
+            viewModel.UpdateSelectedProfile();
+        }
+        catch (Exception exception)
+        {
+            MessageBox.Show(this, exception.Message, "No se pudo actualizar el perfil", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

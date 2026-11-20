@@ -12,9 +12,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     private readonly Fp1RecipeReader reader = new();
     private readonly Fp1RecipeWriter writer = new();
     private readonly ConfiguredFolderStore folderStore = new();
-    private readonly Dictionary<XT50Recipe, XT50Recipe> originalRecipes = new();
-    private readonly Dictionary<XT50Recipe, string> recipePaths = new();
-    private XT50Recipe? selectedRecipe;
+    private RecipeListEntry? selectedEntry;
     private string configuredFolder = string.Empty;
     private string statusMessage = "Abre uno o varios perfiles FP1 para comenzar.";
 
@@ -41,7 +39,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<XT50Recipe> Recipes { get; } = new();
+    public ObservableCollection<RecipeListEntry> Recipes { get; } = new();
 
     public string ConfiguredFolder
     {
@@ -58,20 +56,37 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public XT50Recipe? SelectedRecipe
+    public RecipeListEntry? SelectedEntry
     {
-        get => selectedRecipe;
+        get => selectedEntry;
         set
         {
-            if (ReferenceEquals(selectedRecipe, value))
+            if (ReferenceEquals(selectedEntry, value))
             {
+                if (value is not null)
+                {
+                    value.RefreshDirtyState();
+                }
                 return;
             }
 
-            selectedRecipe = value;
+            if (selectedEntry is not null)
+            {
+                selectedEntry.RefreshDirtyState();
+            }
+
+            selectedEntry = value;
+            if (selectedEntry is not null)
+            {
+                selectedEntry.RefreshDirtyState();
+            }
+
             OnPropertyChanged();
+            OnPropertyChanged(nameof(SelectedRecipe));
         }
     }
+
+    public XT50Recipe? SelectedRecipe => SelectedEntry?.Recipe;
 
     public string StatusMessage
     {
@@ -90,21 +105,20 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     public void LoadProfiles(IEnumerable<string> filePaths)
     {
+        var previouslySelectedPath = SelectedEntry?.FilePath;
         var paths = filePaths.ToArray();
         var recipes = reader.ReadMany(paths);
 
         Recipes.Clear();
-        originalRecipes.Clear();
-        recipePaths.Clear();
         for (var index = 0; index < recipes.Count; index++)
         {
             var recipe = recipes[index];
-            Recipes.Add(recipe);
-            originalRecipes[recipe] = recipe.Clone();
-            recipePaths[recipe] = paths[index];
+            Recipes.Add(new RecipeListEntry(recipe, paths[index]));
         }
 
-        SelectedRecipe = Recipes.FirstOrDefault();
+        SelectedEntry = Recipes.FirstOrDefault(entry =>
+            string.Equals(entry.FilePath, previouslySelectedPath, StringComparison.OrdinalIgnoreCase))
+            ?? Recipes.FirstOrDefault();
         StatusMessage = $"{Recipes.Count} perfil(es) cargado(s).";
     }
 
@@ -137,7 +151,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         if (paths.Length == 0)
         {
             Recipes.Clear();
-            SelectedRecipe = null;
+            SelectedEntry = null;
             StatusMessage = "No se encontraron perfiles FP1 en la carpeta.";
             return;
         }
@@ -145,7 +159,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         LoadProfiles(paths);
     }
 
-    public void SaveSelectedProfile()
+    public void SaveSelectedProfileAsCopy()
     {
         if (SelectedRecipe is null)
         {
@@ -157,25 +171,49 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             throw new DirectoryNotFoundException("Configura primero una carpeta válida.");
         }
 
-        var editedRecipe = SelectedRecipe;
-        var filePath = originalRecipes.ContainsKey(editedRecipe)
-            ? CreateNewProfilePath(editedRecipe.Label)
-            : recipePaths[editedRecipe];
-        writer.Write(editedRecipe, filePath);
+        SelectedEntry?.RefreshLabel();
+        var copy = SelectedRecipe.Clone();
+        var filePath = CreateNewProfilePath(copy.Label);
+        writer.Write(copy, filePath);
+        var copyEntry = new RecipeListEntry(copy, filePath);
+        copyEntry.MarkClean();
+        Recipes.Add(copyEntry);
+        SelectedEntry = copyEntry;
+        StatusMessage = $"Perfil guardado: {Path.GetFileName(filePath)}";
+    }
 
-        var recipeIndex = Recipes.IndexOf(editedRecipe);
-        if (recipeIndex >= 0 && originalRecipes.TryGetValue(editedRecipe, out var originalRecipe))
+    public void UpdateSelectedProfile()
+    {
+        if (SelectedEntry is null)
         {
-            Recipes[recipeIndex] = originalRecipe;
-            Recipes.Insert(recipeIndex + 1, editedRecipe);
-            originalRecipes.Remove(editedRecipe);
-            recipePaths[originalRecipe] = recipePaths[editedRecipe];
-            recipePaths[editedRecipe] = filePath;
-            SelectedRecipe = null;
-            SelectedRecipe = editedRecipe;
+            return;
         }
 
-        StatusMessage = $"Perfil guardado: {Path.GetFileName(filePath)}";
+        writer.Write(SelectedEntry.Recipe, SelectedEntry.FilePath);
+        SelectedEntry.MarkClean();
+        StatusMessage = $"Perfil actualizado: {SelectedEntry.FileName}";
+    }
+
+    public string? GetSelectedRecipeFilePath()
+    {
+        return SelectedEntry?.FilePath;
+    }
+
+    public void DeleteSelectedRecipeFileAndRemove()
+    {
+        if (SelectedEntry is null)
+        {
+            return;
+        }
+
+        var removedEntry = SelectedEntry;
+        File.Delete(removedEntry.FilePath);
+        var removedIndex = Recipes.IndexOf(removedEntry);
+        Recipes.RemoveAt(removedIndex);
+        SelectedEntry = Recipes.Count == 0
+            ? null
+            : Recipes[Math.Min(removedIndex, Recipes.Count - 1)];
+        StatusMessage = $"{removedEntry.Label} y {removedEntry.FileName} se borraron.";
     }
 
     private string CreateNewProfilePath(string label)
