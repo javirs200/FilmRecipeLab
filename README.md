@@ -53,7 +53,11 @@ Resources/
 
 .vscode/
   launch.json                    Configuración de ejecución y depuración
-  tasks.json                     Tareas de compilación y pruebas
+  tasks.json                     Tareas de compilación, pruebas y publicación
+
+publish/
+  FilmRecipeLab/
+    FilmRecipeLab.exe            Ejecutable Release autónomo para Windows x64
 ```
 
 ## Comandos
@@ -65,6 +69,32 @@ dotnet run --project src/FilmRecipeLab.Presentation
 ```
 
 Desde VS Code también están disponibles las configuraciones `FilmRecipeLab: ejecutar WPF` y `FilmRecipeLab: ejecutar con dotnet` desde el panel Run and Debug.
+
+## Crear el ejecutable
+
+La aplicación se publica como un único ejecutable autónomo para Windows x64.
+
+Desde VS Code:
+
+1. Pulsa `Ctrl+Shift+P`.
+2. Ejecuta `Tasks: Run Task`.
+3. Selecciona `FilmRecipeLab: publicar EXE Release`.
+
+También puedes usar el menú `Terminal > Run Task`.
+
+La publicación se genera en:
+
+```text
+publish/FilmRecipeLab/FilmRecipeLab.exe
+```
+
+Este ejecutable incluye el runtime necesario y puede ejecutarse directamente en Windows 11 sin usar `dotnet run`. La carpeta `publish/` está excluida de Git.
+
+Para publicar desde PowerShell:
+
+```powershell
+dotnet publish src/FilmRecipeLab.Presentation/FilmRecipeLab.Presentation.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish/FilmRecipeLab
+```
 
 ## Alcance pendiente
 
