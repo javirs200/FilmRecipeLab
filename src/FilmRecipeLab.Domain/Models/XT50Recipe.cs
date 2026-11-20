@@ -1,8 +1,10 @@
+using System.ComponentModel;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 
 namespace FilmRecipeLab.Domain.Models;
 
-public sealed class XT50Recipe
+public sealed class XT50Recipe : INotifyPropertyChanged
 {
     private readonly Dictionary<string, string?> properties;
 
@@ -53,51 +55,75 @@ public sealed class XT50Recipe
 
     public string Device { get; }
 
-    public string Label { get; set; }
+    private string label = string.Empty;
+    private string filmSimulation = string.Empty;
+    private string dynamicRange = string.Empty;
+    private decimal? exposureBias;
+    private decimal? highlightTone;
+    private decimal? shadowTone;
+    private int? color;
+    private int? sharpness;
+    private int? noiseReduction;
+    private int? clarity;
+    private string whiteBalance = string.Empty;
+    private int? whiteBalanceShiftRed;
+    private int? whiteBalanceShiftBlue;
+    private int? whiteBalanceColorTemperature;
+    private string grainEffect = string.Empty;
+    private string grainEffectSize = string.Empty;
+    private string chromeEffect = string.Empty;
+    private string colorChromeBlue = string.Empty;
+    private string smoothSkinEffect = string.Empty;
+    private int? blackImageTone;
+    private int? monochromaticColorRedGreen;
+    private string lensModulationOptimization = string.Empty;
+    private string colorSpace = string.Empty;
 
-    public string FilmSimulation { get; set; }
+    public string Label { get => label; set => SetProperty(ref label, value); }
 
-    public string DynamicRange { get; set; }
+    public string FilmSimulation { get => filmSimulation; set => SetProperty(ref filmSimulation, value); }
 
-    public decimal? ExposureBias { get; set; }
+    public string DynamicRange { get => dynamicRange; set => SetProperty(ref dynamicRange, value); }
 
-    public decimal? HighlightTone { get; set; }
+    public decimal? ExposureBias { get => exposureBias; set => SetProperty(ref exposureBias, value); }
 
-    public decimal? ShadowTone { get; set; }
+    public decimal? HighlightTone { get => highlightTone; set => SetProperty(ref highlightTone, value); }
 
-    public int? Color { get; set; }
+    public decimal? ShadowTone { get => shadowTone; set => SetProperty(ref shadowTone, value); }
 
-    public int? Sharpness { get; set; }
+    public int? Color { get => color; set => SetProperty(ref color, value); }
 
-    public int? NoiseReduction { get; set; }
+    public int? Sharpness { get => sharpness; set => SetProperty(ref sharpness, value); }
 
-    public int? Clarity { get; set; }
+    public int? NoiseReduction { get => noiseReduction; set => SetProperty(ref noiseReduction, value); }
 
-    public string WhiteBalance { get; set; }
+    public int? Clarity { get => clarity; set => SetProperty(ref clarity, value); }
 
-    public int? WhiteBalanceShiftRed { get; set; }
+    public string WhiteBalance { get => whiteBalance; set => SetProperty(ref whiteBalance, value); }
 
-    public int? WhiteBalanceShiftBlue { get; set; }
+    public int? WhiteBalanceShiftRed { get => whiteBalanceShiftRed; set => SetProperty(ref whiteBalanceShiftRed, value); }
 
-    public int? WhiteBalanceColorTemperature { get; set; }
+    public int? WhiteBalanceShiftBlue { get => whiteBalanceShiftBlue; set => SetProperty(ref whiteBalanceShiftBlue, value); }
 
-    public string GrainEffect { get; set; }
+    public int? WhiteBalanceColorTemperature { get => whiteBalanceColorTemperature; set => SetProperty(ref whiteBalanceColorTemperature, value); }
 
-    public string GrainEffectSize { get; set; }
+    public string GrainEffect { get => grainEffect; set => SetProperty(ref grainEffect, value); }
 
-    public string ChromeEffect { get; set; }
+    public string GrainEffectSize { get => grainEffectSize; set => SetProperty(ref grainEffectSize, value); }
 
-    public string ColorChromeBlue { get; set; }
+    public string ChromeEffect { get => chromeEffect; set => SetProperty(ref chromeEffect, value); }
 
-    public string SmoothSkinEffect { get; set; }
+    public string ColorChromeBlue { get => colorChromeBlue; set => SetProperty(ref colorChromeBlue, value); }
 
-    public int? BlackImageTone { get; set; }
+    public string SmoothSkinEffect { get => smoothSkinEffect; set => SetProperty(ref smoothSkinEffect, value); }
 
-    public int? MonochromaticColorRedGreen { get; set; }
+    public int? BlackImageTone { get => blackImageTone; set => SetProperty(ref blackImageTone, value); }
 
-    public string LensModulationOptimization { get; set; }
+    public int? MonochromaticColorRedGreen { get => monochromaticColorRedGreen; set => SetProperty(ref monochromaticColorRedGreen, value); }
 
-    public string ColorSpace { get; set; }
+    public string LensModulationOptimization { get => lensModulationOptimization; set => SetProperty(ref lensModulationOptimization, value); }
+
+    public string ColorSpace { get => colorSpace; set => SetProperty(ref colorSpace, value); }
 
     public string DigitalTeleConverter { get; }
 
@@ -143,6 +169,25 @@ public sealed class XT50Recipe
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         properties[name] = value;
+        OnPropertyChanged(name);
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value))
+        {
+            return;
+        }
+
+        field = value;
+        OnPropertyChanged(propertyName);
+    }
+
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     public static readonly IReadOnlySet<string> FilmSimulationCodes = new HashSet<string>(StringComparer.Ordinal)
