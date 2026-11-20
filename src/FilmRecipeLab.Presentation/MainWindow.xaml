@@ -5,14 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FilmRecipeLab.Presentation"
         mc:Ignorable="d"
-        Title="FilmRecipe Lab" Height="720" Width="1100" MinHeight="600" MinWidth="900">
+        Title="FilmRecipe Lab" Height="720" Width="1100" MinHeight="600" MinWidth="900"
+        Background="{StaticResource AppBackgroundBrush}" Foreground="{StaticResource PrimaryTextBrush}">
     <Window.Resources>
         <local:NumericValueConverter x:Key="NumericValueConverter" />
         <local:ExposureBiasDisplayConverter x:Key="ExposureBiasDisplayConverter" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
-    <DockPanel Margin="18">
-        <Border DockPanel.Dock="Top" Background="#243447" CornerRadius="6" Padding="14" Margin="0,0,0,14">
+    <DockPanel Margin="18" Background="{StaticResource AppBackgroundBrush}">
+        <Border DockPanel.Dock="Top" Background="#26313D" CornerRadius="6" Padding="14" Margin="0,0,0,14">
             <StackPanel>
                 <DockPanel>
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
@@ -29,7 +30,7 @@
                     <Button Content="Seleccionar..." Click="ChooseFolder_Click" DockPanel.Dock="Right" Padding="12,6" Margin="8,0,0,0" />
                     <TextBox Text="{Binding ConfiguredFolder, Mode=OneWay}" IsReadOnly="True" VerticalContentAlignment="Center" />
                 </DockPanel>
-                <TextBlock Margin="0,6,0,0" Foreground="#D5DEE8" FontSize="11" TextWrapping="Wrap">
+                <TextBlock Margin="0,6,0,0" Foreground="#C4CED8" FontSize="11" TextWrapping="Wrap">
                     RAW STUDIO guarda perfiles bajo %LOCALAPPDATA%\com.fujifilm.denji\X_RAW_STUDIO. Para la X-T50, selecciona X-T50\X-T50_0100.
                 </TextBlock>
             </StackPanel>
@@ -63,7 +64,7 @@
                                          ToolTip="Cambios pendientes de guardar o actualizar" />
                                 <StackPanel>
                                     <TextBlock Text="{Binding Label}" FontWeight="SemiBold" />
-                                    <TextBlock Text="{Binding FileName}" FontSize="11" Foreground="#68737D" />
+                                    <TextBlock Text="{Binding FileName}" FontSize="11" Foreground="#AEB7C3" />
                                 </StackPanel>
                             </DockPanel>
                         </DataTemplate>
@@ -71,7 +72,7 @@
                 </ListBox>
             </GroupBox>
 
-            <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" Background="{StaticResource AppBackgroundBrush}">
                 <StackPanel DataContext="{Binding SelectedRecipe}">
                     <TextBlock Text="Editor de receta" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,16" />
 
