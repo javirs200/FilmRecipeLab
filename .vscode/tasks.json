@@ -37,6 +37,27 @@
             ],
             "problemMatcher": "$msCompile",
             "group": "test"
+        },
+        {
+            "label": "FilmRecipeLab: publicar EXE Release",
+            "type": "process",
+            "command": "dotnet",
+            "args": [
+                "publish",
+                "${workspaceFolder}/src/FilmRecipeLab.Presentation/FilmRecipeLab.Presentation.csproj",
+                "-c",
+                "Release",
+                "-r",
+                "win-x64",
+                "--self-contained",
+                "true",
+                "-p:PublishSingleFile=true",
+                "-p:IncludeNativeLibrariesForSelfExtract=true",
+                "-o",
+                "${workspaceFolder}/publish/FilmRecipeLab"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": "build"
         }
     ]
 }

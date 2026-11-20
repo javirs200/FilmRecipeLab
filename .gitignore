@@ -15,6 +15,9 @@ coverage/
 .DS_Store
 Thumbs.db
 
+# Published binaries
+publish/
+
 # Resources
 Resources/*
 !Resources/DemoFile.FP1
