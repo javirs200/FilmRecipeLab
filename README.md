@@ -1,24 +1,60 @@
 # FilmRecipe Lab
 
-Aplicación de escritorio para Windows 11 destinada a gestionar y editar recetas de la Fujifilm X-T50 almacenadas en perfiles FP1 de Fujifilm RAW Studio.
+Aplicación de escritorio para Windows 11 destinada a gestionar, editar y exportar recetas de la Fujifilm X-T50 almacenadas en perfiles `.FP1` de Fujifilm RAW Studio.
+
+El proyecto está limitado intencionadamente a la X-T50. No busca soportar otras cámaras Fujifilm.
+
+## Estado actual
+
+- Aplicación WPF sobre C#/.NET 8 con tema oscuro.
+- Lectura de uno o varios perfiles `.FP1`.
+- Modelo tipado específico para los parámetros editables de la X-T50.
+- Exportación a `.FP1` conservando metadatos y propiedades XML desconocidas.
+- XML generado validado manualmente en Fujifilm RAW Studio.
+- Carpeta configurable que se carga automáticamente al iniciar la aplicación.
+- Ruta predeterminada de RAW STUDIO: `%LOCALAPPDATA%\com.fujifilm.denji\X_RAW_STUDIO\X-T50\X-T50_0100`.
+- Recarga manual de perfiles externos mediante el botón con icono de actualizar.
+- Edición visual mediante controles deslizantes y campos opcionales.
+- `ExposureBias` mostrado como fracciones como `1/3`, `2/3` o `1 1/3`, mientras se conserva internamente como valor decimal.
+- Lista que muestra nombre y archivo `.FP1` asociado.
+- Marca azul en las recetas con cambios pendientes de actualizar o guardar.
+- `Guardar copia nueva` crea un archivo nuevo sin modificar el original.
+- `Actualizar` sobrescribe el archivo seleccionado, previa confirmación.
+- `Quitar` y `Supr` eliminan el archivo seleccionado, previa confirmación.
+
+## Vista Previa
+
+![Vista Previa](docs/screenshots/Main-Window.png)
+
+## Uso
+
+1. Abre la aplicación desde VS Code con `F5` o ejecuta `dotnet run --project src/FilmRecipeLab.Presentation`.
+2. Si es la primera ejecución y existe la carpeta RAW STUDIO de la X-T50, se usa y escanea automáticamente.
+3. Para otra ubicación, usa `Seleccionar...` y elige la carpeta que contenga los `.FP1`.
+4. Selecciona una receta en la lista y edita sus valores.
+5. Usa `Recargar` después de realizar cambios fuera de la aplicación.
+6. Usa `Guardar copia nueva` para conservar el perfil original y crear una versión nueva.
+7. Usa `Actualizar` para sobrescribir el `.FP1` seleccionado después de confirmar.
 
 ## Estructura
 
 ```text
 src/
-	FilmRecipeLab.Domain/          Modelo de receta y reglas del dominio
-	FilmRecipeLab.Application/    Casos de uso y contratos de servicios
-	FilmRecipeLab.Infrastructure/ Lectura/escritura FP1 y OCR offline
-	FilmRecipeLab.Presentation/   Aplicación WPF, vistas y ViewModels
+  FilmRecipeLab.Domain/          Modelo XT50Recipe y reglas del dominio
+  FilmRecipeLab.Application/    Casos de uso y contratos de servicios
+  FilmRecipeLab.Infrastructure/ Lectura y escritura FP1
+  FilmRecipeLab.Presentation/   Aplicación WPF, vistas y ViewModels
 
 tests/
-	FilmRecipeLab.Tests/           Pruebas automatizadas
+  FilmRecipeLab.Tests/           Pruebas de lectura, escritura y conversión
 
 Resources/
-	DemoFile.FP1                   Perfil de referencia
-```
+  DemoFile.FP1                   Perfil de referencia publicado
 
-La aplicación está limitada intencionadamente a la Fujifilm X-T50. No se busca crear un modelo genérico para otras cámaras.
+.vscode/
+  launch.json                    Configuración de ejecución y depuración
+  tasks.json                     Tareas de compilación y pruebas
+```
 
 ## Comandos
 
@@ -27,3 +63,19 @@ dotnet build FilmRecipeLab.sln
 dotnet test FilmRecipeLab.sln
 dotnet run --project src/FilmRecipeLab.Presentation
 ```
+
+Desde VS Code también están disponibles las configuraciones `FilmRecipeLab: ejecutar WPF` y `FilmRecipeLab: ejecutar con dotnet` desde el panel Run and Debug.
+
+## Alcance pendiente
+
+- Interfaz para importar recetas desde capturas mediante OCR.
+- Compatibilidad con cámaras Fujifilm distintas de la X-T50.
+
+## Seguridad y conservación de datos
+
+- La lectura no modifica archivos existentes.
+- `Guardar copia nueva` evita sobrescribir el perfil original.
+- `Actualizar` pide confirmación antes de sobrescribir.
+- `Quitar` pide confirmación antes de borrar el `.FP1`.
+- Los campos desconocidos siguen conservándose durante la exportación.
+
