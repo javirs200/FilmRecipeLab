@@ -6,12 +6,7 @@ on:
       version:
         description: Versión que se publicará (sin prefijo v)
         required: true
-        default: "1.0"
-        type: string
-      changelog:
-        description: Notas de versión opcionales. Si se dejan vacías, GitHub genera las notas automáticamente.
-        required: false
-        default: ""
+        default: "1.1"
         type: string
 
 permissions:
@@ -57,12 +52,28 @@ jobs:
           -p:IncludeNativeLibrariesForSelfExtract=true
           --output publish/FilmRecipeLab
 
+      - name: Preparar notas de versión
+        shell: pwsh
+        run: |
+          $notesFile = "Resources/ReleaseNotes.md"
+          $content = Get-Content -Raw -Path $notesFile
+          $escapedVersion = [regex]::Escape($env:RELEASE_VERSION)
+          $pattern = "(?ms)^##[ \t]+v?$escapedVersion[ \t]*\r?\n(.*?)(?=^##[ \t]+|\z)"
+          $match = [regex]::Match($content, $pattern)
+
+          if (-not $match.Success -or [string]::IsNullOrWhiteSpace($match.Groups[1].Value)) {
+            throw "No hay notas para la versión $env:RELEASE_VERSION en $notesFile. Añade una sección '## $env:RELEASE_VERSION' y vuelve a ejecutar el workflow."
+          }
+
+          $releaseNotes = $match.Groups[1].Value.Trim()
+          $releaseNotesPath = Join-Path $env:GITHUB_WORKSPACE "publish/FilmRecipeLab/ReleaseNotes.md"
+          Set-Content -Path $releaseNotesPath -Value $releaseNotes -Encoding utf8
+
       - name: Crear release de GitHub
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.RELEASE_TAG }}
           name: FilmRecipe Lab ${{ env.RELEASE_TAG }}
-          body: ${{ inputs.changelog }}
-          generate_release_notes: ${{ inputs.changelog == '' }}
+          body_path: publish/FilmRecipeLab/ReleaseNotes.md
           files: publish/FilmRecipeLab/FilmRecipeLab.exe
           fail_on_unmatched_files: true

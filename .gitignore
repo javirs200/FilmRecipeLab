@@ -21,3 +21,4 @@ publish/
 # Resources
 Resources/*
 !Resources/DemoFile.FP1
+!Resources/ReleaseNotes.md

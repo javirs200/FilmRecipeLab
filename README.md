@@ -57,6 +57,9 @@ Resources/
   launch.json                    Configuración de ejecución y depuración
   tasks.json                     Tareas de compilación, pruebas y publicación
 
+Resources/
+  ReleaseNotes.md                Notas por versión para las releases de GitHub
+
 publish/
   FilmRecipeLab/
     FilmRecipeLab.exe            Ejecutable Release autónomo para Windows x64
@@ -100,11 +103,12 @@ dotnet publish src/FilmRecipeLab.Presentation/FilmRecipeLab.Presentation.csproj 
 
 ## Crear una release desde GitHub
 
-1. Abre la pestaña **Actions** del repositorio y selecciona **Crear release**.
-2. Pulsa **Run workflow**, elige la rama y escribe la versión (por ejemplo, `1.0`).
-3. Pulsa **Run workflow** para ejecutar las pruebas, publicar el ejecutable autónomo y crear una release con la etiqueta `v1.0`.
+1. Añade en `Resources/ReleaseNotes.md` un apartado `## X.Y` con los cambios de esa versión.
+2. Abre la pestaña **Actions** del repositorio y selecciona **Crear release**.
+3. Pulsa **Run workflow**, elige la rama y escribe la versión sin prefijo `v` (por ejemplo, `1.1`).
+4. Pulsa **Run workflow** para ejecutar las pruebas, publicar el ejecutable autónomo y crear una release con la etiqueta `v1.1`.
 
-El archivo `FilmRecipeLab.exe` quedará adjunto a la release. Usa una versión nueva para cada publicación.
+El body de cada release se extrae de su sección correspondiente en `Resources/ReleaseNotes.md`; si no existe o está vacía, el workflow falla antes de crear la release. El archivo `FilmRecipeLab.exe` quedará adjunto. Usa una sección y una versión nuevas para cada publicación.
 
 ## Alcance pendiente
 
