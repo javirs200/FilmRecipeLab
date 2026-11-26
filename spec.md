@@ -1,8 +1,8 @@
 # FilmRecipe Lab
 
 ## Versión vigente
-- Versión de la aplicación: `1.2`.
-- La versión del ejecutable se define en `FilmRecipeLab.Presentation.csproj`; la etiqueta de release correspondiente es `v1.2`.
+- Versión de la aplicación: `1.3`.
+- La versión del ejecutable se define en `FilmRecipeLab.Presentation.csproj`; la etiqueta de release correspondiente es `v1.3`.
 
 ## Objetivo
 - Aplicación de escritorio para gestionar y editar recetas de la Fujifilm X-T50.
@@ -10,7 +10,7 @@
 - Permite importar perfiles existentes, editarlos y exportarlos conservando la estructura del perfil.
 - Permitirá importar recetas desde capturas de pantalla mediante OCR en una fase posterior.
 
-## Alcance implementado en la versión 1.2
+## Alcance implementado en la versión 1.3
 - Aplicación de escritorio para Windows 11 mediante WPF sobre C#/.NET.
 - Carga de uno o varios perfiles `.FP1` de la Fujifilm X-T50.
 - Creación de recetas X-T50 desde cero y guardado del borrador como un nuevo perfil `.FP1`.
