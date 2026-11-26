@@ -55,7 +55,7 @@ Parámetros editables de la receta:
 
 | Campo XML | Tipo | Rango u opciones | Paso | Valor inicial | Notas |
 |---|---|---|---|---|---|
-| `FilmSimulation` | Código/opción | `Provia`,`Velvia`,`Astia`,`Classic`,`Reala`,`NEGAhi`,`NEGAStd`,`ClassicNEGA`,`NostalgicNEGA`,`Eterna`,`BleachBypass`,`Acros`,`AcrosYe`,`AcrosG`,`AcrosR`,`BW`,`BYe`,`BG`,`Sepia` | - | `Provia` | Son los códigos internos observados en los perfiles FP1. La etiqueta visible de la cámara puede ser distinta. |
+| `FilmSimulation` | Código/opción | `Provia`,`Velvia`,`Astia`,`Classic`,`Reala`,`NEGAhi`,`NEGAStd`,`ClassicNEGA`,`NostalgicNEGA`,`Eterna`,`BleachBypass`,`Acros`,`AcrosYe`,`AcrosG`,`AcrosR`,`BW`,`BR`,`BYe`,`BG`,`Sepia` | - | `Provia` | Se guarda el código interno en XML; la interfaz presenta la etiqueta visible correspondiente. |
 | `DynamicRange` | Entero/opción | `100`,`200`,`400` | - | `400` | Valores observados en los perfiles. `AUTO` queda pendiente de confirmar en el XML. |
 | `WideDRange` | Entero/opción | Pendiente | Pendiente | `0` | Rango dinámico ampliado (no lo veo en la camara )|
 | `ExposureBias` | Código/número | `-2` a `+3` | `1/3` | `0` | Rango visible en la X-T50. El XML codifica el signo y el valor como texto: `P0P00` = `0`, `P0P33` = `+1/3`, `P0P67` = `+2/3`, `P1P00` = `+1`, `P1P33` = `+1 1/3`, `P3P00` = `+3`, `M0P67` = `-2/3` y `M2P00` = `-2`. La conversión de lectura y escritura está implementada. |
@@ -103,3 +103,30 @@ El atributo XML `label` contiene el nombre personalizado de la receta, no la sim
 `Classic Retro`, `DisparoOriginalDr400%`, `loco1` a `loco24`, `Mio 1`, `Ninh Van Bay`, `Pro neg`, `Shibuya` y `ZL Portra 400 bis`.
 
 Estos nombres deben tratarse como datos de usuario y no como valores cerrados del modelo. La simulación se obtiene exclusivamente de `FilmSimulation`.
+
+### Etiquetas visibles de simulación
+
+El selector muestra nombres de cámara y mantiene el código interno de `FilmSimulation` en el modelo/XML:
+
+| Código interno | Etiqueta en la interfaz |
+|---|---|
+| `Provia` | Provia (Standard) |
+| `Velvia` | Velvia (Vivid) |
+| `Astia` | Astia (Soft) |
+| `Classic` | Classic Chrome |
+| `Reala` | Reala Ace |
+| `ClassicNEGA` | Classic Negative |
+| `NostalgicNEGA` | Nostalgic Neg. |
+| `Eterna` | Eterna (Cinema) |
+| `BleachBypass` | Eterna Bleach Bypass |
+| `NEGAhi` | PRO Neg. Hi |
+| `NEGAStd` | PRO Neg. Std |
+| `Acros` | Acros (Standard) |
+| `AcrosR` | Acros Red |
+| `AcrosYe` | Acros Yellow |
+| `AcrosG` | Acros Green |
+| `BW` | Monochrome (Standard) |
+| `BR` | Monochrome Red |
+| `BYe` | Monochrome Yellow |
+| `BG` | Monochrome Green |
+| `Sepia` | Sepia |
