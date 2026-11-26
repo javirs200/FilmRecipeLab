@@ -6,7 +6,11 @@ Cada release usa únicamente el contenido situado bajo el encabezado cuya versi�
 
 ### Mejorado
 - El selector de simulación muestra los nombres visibles de Fujifilm en lugar de los códigos internos del XML. La aplicación sigue guardando los códigos FP1 correspondientes.
+- Corregida la presentación del valor seleccionado en el selector de simulación: ahora muestra la etiqueta visible y no el nombre interno del objeto.
 - Reorganizado el editor para separar mejor las etiquetas de los controles de la columna contigua.
+### Añadido 
+- Añadida la creación de recetas X-T50 desde cero con valores iniciales FP1.
+- Un borrador nuevo aparece como pendiente de guardar; `Guardar copia nueva` crea su primer archivo sin generar una entrada duplicada.
 
 ## 1.1
 

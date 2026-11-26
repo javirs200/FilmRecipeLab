@@ -159,6 +159,14 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         LoadProfiles(paths);
     }
 
+    public void CreateNewRecipe()
+    {
+        var entry = new RecipeListEntry(XT50Recipe.CreateDefault(), null);
+        Recipes.Add(entry);
+        SelectedEntry = entry;
+        StatusMessage = "Receta nueva: edítala y guárdala como copia para crear el archivo FP1.";
+    }
+
     public void SaveSelectedProfileAsCopy()
     {
         if (SelectedRecipe is null)
@@ -171,8 +179,20 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             throw new DirectoryNotFoundException("Configura primero una carpeta válida.");
         }
 
-        SelectedEntry?.RefreshLabel();
-        var copy = SelectedRecipe.Clone();
+        var selectedEntry = SelectedEntry!;
+        selectedEntry.RefreshLabel();
+
+        if (selectedEntry.FilePath is null)
+        {
+            var newRecipePath = CreateNewProfilePath(selectedEntry.Recipe.Label);
+            writer.Write(selectedEntry.Recipe, newRecipePath);
+            selectedEntry.SetSavedPath(newRecipePath);
+            selectedEntry.MarkClean();
+            StatusMessage = $"Perfil guardado: {Path.GetFileName(newRecipePath)}";
+            return;
+        }
+
+        var copy = selectedEntry.Recipe.Clone();
         var filePath = CreateNewProfilePath(copy.Label);
         writer.Write(copy, filePath);
         var copyEntry = new RecipeListEntry(copy, filePath);
@@ -187,6 +207,11 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         if (SelectedEntry is null)
         {
             return;
+        }
+
+        if (SelectedEntry.FilePath is null)
+        {
+            throw new InvalidOperationException("La receta todavía no tiene un archivo. Usa Guardar copia nueva para crear el FP1.");
         }
 
         writer.Write(SelectedEntry.Recipe, SelectedEntry.FilePath);
@@ -207,13 +232,18 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         }
 
         var removedEntry = SelectedEntry;
-        File.Delete(removedEntry.FilePath);
+        if (removedEntry.FilePath is not null)
+        {
+            File.Delete(removedEntry.FilePath);
+        }
         var removedIndex = Recipes.IndexOf(removedEntry);
         Recipes.RemoveAt(removedIndex);
         SelectedEntry = Recipes.Count == 0
             ? null
             : Recipes[Math.Min(removedIndex, Recipes.Count - 1)];
-        StatusMessage = $"{removedEntry.Label} y {removedEntry.FileName} se borraron.";
+        StatusMessage = removedEntry.FilePath is null
+            ? $"Borrador '{removedEntry.Label}' descartado."
+            : $"{removedEntry.Label} y {removedEntry.FileName} se borraron.";
     }
 
     private string CreateNewProfilePath(string label)

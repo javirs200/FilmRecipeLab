@@ -1,10 +1,30 @@
 using System.Text;
+using FilmRecipeLab.Domain.Models;
 using FilmRecipeLab.Infrastructure.Xml;
 
 namespace FilmRecipeLab.Tests.Domain;
 
 public sealed class Fp1RecipeWriterTests
 {
+  [Fact]
+  public void Write_Exports_New_Default_Recipe_As_Loadable_XT50_Profile()
+  {
+    var recipe = XT50Recipe.CreateDefault();
+    using var output = new MemoryStream();
+
+    new Fp1RecipeWriter().Write(recipe, output);
+    output.Position = 0;
+    var exported = new Fp1RecipeReader().Read(output);
+
+    Assert.Equal("Nueva receta", exported.Label);
+    Assert.Equal("X-T50_0100", exported.ProfileVersion);
+    Assert.Equal("Provia", exported.FilmSimulation);
+    Assert.Equal(0m, exported.ExposureBias);
+    Assert.Equal("Auto", exported.WhiteBalance);
+    Assert.Equal("X-T50_0100", exported.GetProperty("TetherRAWConditonCode"));
+    Assert.Equal("OFF", exported.GetProperty("DigitalTeleConv"));
+  }
+
     [Fact]
     public void Write_Exports_Typed_Values_And_Preserves_Unknown_Properties()
     {

@@ -1,3 +1,6 @@
 namespace FilmRecipeLab.Presentation;
 
-public sealed record FilmSimulationOption(string Code, string Label);
+public sealed record FilmSimulationOption(string Code, string Label)
+{
+	public override string ToString() => Label;
+}

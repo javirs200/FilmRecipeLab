@@ -9,20 +9,21 @@ public sealed class RecipeListEntry : INotifyPropertyChanged
 {
     private XT50Recipe cleanRecipe;
     private bool hasChanges;
+    private string? filePath;
 
-    public RecipeListEntry(XT50Recipe recipe, string filePath)
+    public RecipeListEntry(XT50Recipe recipe, string? filePath)
     {
         Recipe = recipe;
-        FilePath = filePath;
+        this.filePath = filePath;
         cleanRecipe = recipe.Clone();
         Recipe.PropertyChanged += (_, _) => RefreshDirtyState();
     }
 
     public XT50Recipe Recipe { get; }
 
-    public string FilePath { get; }
+    public string? FilePath => filePath;
 
-    public string FileName => Path.GetFileName(FilePath);
+    public string FileName => string.IsNullOrWhiteSpace(FilePath) ? "Sin guardar" : Path.GetFileName(FilePath);
 
     public string Label => Recipe.Label;
 
@@ -51,7 +52,7 @@ public sealed class RecipeListEntry : INotifyPropertyChanged
 
     public void RefreshDirtyState()
     {
-        HasChanges = !HasSameEditableState(cleanRecipe, Recipe);
+        HasChanges = FilePath is null || !HasSameEditableState(cleanRecipe, Recipe);
     }
 
     public void MarkClean()
@@ -59,6 +60,13 @@ public sealed class RecipeListEntry : INotifyPropertyChanged
         cleanRecipe = Recipe.Clone();
         RefreshLabel();
         RefreshDirtyState();
+    }
+
+    public void SetSavedPath(string savedPath)
+    {
+        filePath = savedPath;
+        OnPropertyChanged(nameof(FilePath));
+        OnPropertyChanged(nameof(FileName));
     }
 
     private static bool HasSameEditableState(XT50Recipe first, XT50Recipe second)

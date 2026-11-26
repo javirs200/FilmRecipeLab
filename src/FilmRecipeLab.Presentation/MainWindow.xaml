@@ -23,6 +23,7 @@
                 </StackPanel>
                 <DockPanel>
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                        <Button Content="Nueva receta" Click="NewRecipe_Click" Padding="14,8" Margin="0,0,8,0" />
                         <Button Content="Guardar copia nueva" Click="SaveCopy_Click" Padding="14,8" Margin="0,0,8,0" />
                         <Button Content="Actualizar" Click="UpdateProfile_Click" Padding="14,8" ToolTip="Sobrescribe el archivo seleccionado" />
                     </StackPanel>

@@ -129,6 +129,54 @@ public sealed class XT50Recipe : INotifyPropertyChanged
 
     public IReadOnlyDictionary<string, string?> Properties => properties;
 
+    public static XT50Recipe CreateDefault(string label = "Nueva receta")
+    {
+        var defaults = new Dictionary<string, string?>(StringComparer.Ordinal)
+        {
+            ["SerialNumber"] = "000000000000000000000000000000",
+            ["TetherRAWConditonCode"] = "X-T50_0100",
+            ["Editable"] = "TRUE",
+            ["SourceFileName"] = string.Empty,
+            ["Fileerror"] = "NONE",
+            ["RotationAngle"] = "0",
+            ["StructVer"] = "65536",
+            ["IOPCode"] = "FF189504",
+            ["ShootingCondition"] = "OFF",
+            ["FileType"] = "JPG",
+            ["ImageSize"] = "L3x2",
+            ["ImageQuality"] = "Fine",
+            ["ExposureBias"] = "P0P00",
+            ["DynamicRange"] = "400",
+            ["WideDRange"] = "0",
+            ["FilmSimulation"] = "Provia",
+            ["BlackImageTone"] = "0",
+            ["MonochromaticColor_RG"] = "0",
+            ["GrainEffect"] = "OFF",
+            ["GrainEffectSize"] = "SMALL",
+            ["ChromeEffect"] = "OFF",
+            ["ColorChromeBlue"] = "OFF",
+            ["SmoothSkinEffect"] = "OFF",
+            ["WBShootCond"] = "ON",
+            ["WhiteBalance"] = "Auto",
+            ["WBShiftR"] = "0",
+            ["WBShiftB"] = "0",
+            ["WBColorTemp"] = "0K",
+            ["HighlightTone"] = "0",
+            ["ShadowTone"] = "0",
+            ["Color"] = "0",
+            ["Sharpness"] = "0",
+            ["NoisReduction"] = "0",
+            ["Clarity"] = "0",
+            ["LensModulationOpt"] = "ON",
+            ["ColorSpace"] = "sRGB",
+            ["HDR"] = string.Empty,
+            ["DigitalTeleConv"] = "OFF",
+            ["PortraitEnhancer"] = string.Empty
+        };
+
+        return new XT50Recipe("X-T50_0100", SupportedDevice, label, defaults);
+    }
+
     public XT50Recipe Clone()
     {
         var clone = new XT50Recipe(ProfileVersion, Device, Label, Properties)

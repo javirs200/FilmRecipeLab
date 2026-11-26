@@ -2,7 +2,7 @@
 
 Aplicación de escritorio para Windows 11 destinada a gestionar, editar y exportar recetas de la Fujifilm X-T50 almacenadas en perfiles `.FP1` de Fujifilm RAW Studio.
 
-**Versión actual: 1.1**
+**Versión actual: 1.2**
 
 El proyecto está limitado intencionadamente a la X-T50. No busca soportar otras cámaras Fujifilm.
 
@@ -11,6 +11,7 @@ El proyecto está limitado intencionadamente a la X-T50. No busca soportar otras
 - Aplicación WPF sobre C#/.NET 8 con tema oscuro.
 - Lectura de uno o varios perfiles `.FP1`.
 - Modelo tipado específico para los parámetros editables de la X-T50.
+- Creación de recetas X-T50 desde cero con valores iniciales listos para editar.
 - Exportación a `.FP1` conservando metadatos y propiedades XML desconocidas.
 - XML generado validado manualmente en Fujifilm RAW Studio.
 - Carpeta configurable que se carga automáticamente al iniciar la aplicación.
@@ -33,10 +34,10 @@ El proyecto está limitado intencionadamente a la X-T50. No busca soportar otras
 1. Abre la aplicación desde VS Code con `F5` o ejecuta `dotnet run --project src/FilmRecipeLab.Presentation`.
 2. Si es la primera ejecución y existe la carpeta RAW STUDIO de la X-T50, se usa y escanea automáticamente.
 3. Para otra ubicación, usa `Seleccionar...` y elige la carpeta que contenga los `.FP1`.
-4. Selecciona una receta en la lista y edita sus valores.
-5. Usa `Recargar` después de realizar cambios fuera de la aplicación.
-6. Usa `Guardar copia nueva` para conservar el perfil original y crear una versión nueva.
-7. Usa `Actualizar` para sobrescribir el `.FP1` seleccionado después de confirmar.
+4. Pulsa `Nueva receta` para empezar desde cero aunque la carpeta esté vacía, o selecciona un perfil existente.
+5. Edita sus valores y usa `Recargar` después de realizar cambios fuera de la aplicación.
+6. Usa `Guardar copia nueva` para crear el primer `.FP1` de un borrador o conservar el original de un perfil cargado.
+7. Usa `Actualizar` para sobrescribir un `.FP1` existente después de confirmar.
 
 ## Estructura
 

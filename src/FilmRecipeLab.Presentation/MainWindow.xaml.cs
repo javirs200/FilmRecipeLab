@@ -107,6 +107,11 @@ public partial class MainWindow : Window
         }
     }
 
+    private void NewRecipe_Click(object sender, RoutedEventArgs e)
+    {
+        viewModel.CreateNewRecipe();
+    }
+
     private void ReloadFolder_Click(object sender, RoutedEventArgs e)
     {
         try
@@ -144,14 +149,17 @@ public partial class MainWindow : Window
     {
         var recipe = viewModel.SelectedRecipe;
         var filePath = viewModel.GetSelectedRecipeFilePath();
-        if (recipe is null || filePath is null)
+        if (recipe is null)
         {
             return;
         }
 
+        var message = filePath is null
+            ? $"¿Quieres descartar el borrador '{recipe.Label}'?"
+            : $"¿Quieres borrar la receta '{recipe.Label}' y su archivo?\n\n{filePath}\n\nEsta acción no se puede deshacer.";
         var confirmation = MessageBox.Show(
             this,
-            $"¿Quieres borrar la receta '{recipe.Label}' y su archivo?\n\n{filePath}\n\nEsta acción no se puede deshacer.",
+            message,
             "Confirmar borrado",
             MessageBoxButton.YesNo,
             MessageBoxImage.Warning,
@@ -176,8 +184,14 @@ public partial class MainWindow : Window
     {
         var recipe = viewModel.SelectedRecipe;
         var filePath = viewModel.GetSelectedRecipeFilePath();
-        if (recipe is null || filePath is null)
+        if (recipe is null)
         {
+            return;
+        }
+
+        if (filePath is null)
+        {
+            MessageBox.Show(this, "Esta receta todavía no tiene un archivo. Usa 'Guardar copia nueva' para crear su primer FP1.", "Receta sin guardar", MessageBoxButton.OK, MessageBoxImage.Information);
             return;
         }
 
