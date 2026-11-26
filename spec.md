@@ -1,4 +1,8 @@
-# FlimRecipe LAb
+# FilmRecipe Lab
+
+## Versión vigente
+- Versión de la aplicación: `1.2`.
+- La versión del ejecutable se define en `FilmRecipeLab.Presentation.csproj`; la etiqueta de release correspondiente es `v1.2`.
 
 ## Objetivo
 - Aplicación de escritorio para gestionar y editar recetas de la Fujifilm X-T50.
@@ -6,10 +10,13 @@
 - Permite importar perfiles existentes, editarlos y exportarlos conservando la estructura del perfil.
 - Permitirá importar recetas desde capturas de pantalla mediante OCR en una fase posterior.
 
-## Alcance version inicial
+## Alcance implementado en la versión 1.2
 - Aplicación de escritorio para Windows 11 mediante WPF sobre C#/.NET.
 - Carga de uno o varios perfiles `.FP1` de la Fujifilm X-T50.
+- Creación de recetas X-T50 desde cero y guardado del borrador como un nuevo perfil `.FP1`.
 - Modelo de receta tipado para los parámetros definidos.
+- Edición del balance de blancos, temperatura Kelvin y desplazamientos rojo/azul desde una sección agrupada.
+- Edición de `Color Chrome FX` y `Color Chrome FX Blue` mediante selectores de nivel.
 - Exportación de perfiles modificados a `.FP1`.
 - Conservación de propiedades XML que todavía no forman parte del modelo editable.
 - Validación manual realizada: el XML generado se abre correctamente en Fujifilm RAW Studio.
@@ -65,14 +72,14 @@ Parámetros editables de la receta:
 | `Sharpness` | Número | `-4`,`4` | `1` | `0` | Nitidez |
 | `NoisReduction` | Número | `-4`,`4` | `1` | `0` | Mantener el nombre original del XML |
 | `Clarity` | Número | `-5`,`5` | `1` | `0` | Claridad |
-| `WhiteBalance` | Código/opción | `INVALID`,`Auto`,`Auto_Ambience`,`Auto_White`,`Custom1`,`Custom2`,`Custom3`,`Daylight`,`FLight1`,`FLight2`,`FLight3`,`Incand`,`Shade`,`Temperature`,`UWater` | - | `INVALID` | Códigos internos observados en los perfiles. |
-| `WBShiftR` | Número | `-9`,`9` | `1` | `0` | Ajuste de balance hacia rojo |
-| `WBShiftB` | Número | `-9`,`9` | `1` | `0` | Ajuste de balance hacia azul |
+| `WhiteBalance` | Código/opción | `INVALID`,`Auto`,`Auto_Ambience`,`Auto_White`,`Custom1`,`Custom2`,`Custom3`,`Daylight`,`FLight1`,`FLight2`,`FLight3`,`Incand`,`Shade`,`Temperature`,`UWater` | - | `INVALID` | Códigos internos observados en los perfiles. `Temperature` se presenta como `Kelvin fijo (Fixed Kelvin)` en la interfaz. |
+| `WBShiftR` | Número | `-9`,`9` | `1` | `0` | Ajuste de balance hacia rojo; se muestra como `WB Shift R` junto al balance de blancos. |
+| `WBShiftB` | Número | `-9`,`9` | `1` | `0` | Ajuste de balance hacia azul; se muestra como `WB Shift B` junto al balance de blancos. |
 | `WBColorTemp` | Temperatura (Kelvin) | `0K` o de `2500K` a `10000K` | `100K` | `0K` | Temperatura de la luz cuando `WhiteBalance` es `Temperature`; en otro caso se utiliza `0K`. La conversión de lectura y escritura está implementada. |
 | `GrainEffect` | Opción | `OFF`,`STRONG`,`WEAK` | - | `OFF` | Valores observados en los perfiles. |
 | `GrainEffectSize` | Opción | `LARGE`,`SMALL` | - | `SMALL` | Tamaño del grano |
-| `ChromeEffect` | Opción | `OFF`,`STRONG` | - | `OFF` | Valores observados en los perfiles. `WEAK` no aparece en los ejemplos. |
-| `ColorChromeBlue` | Opción | `OFF`,`STRONG`,`WEAK` | - | `OFF` | Valores observados en los perfiles. |
+| `ChromeEffect` | Opción | `OFF`,`STRONG`,`WEAK` | - | `OFF` | Se muestra como `Color Chrome FX`; el selector permite los tres niveles. |
+| `ColorChromeBlue` | Opción | `OFF`,`STRONG`,`WEAK` | - | `OFF` | Se muestra como `Color Chrome FX Blue`; valores observados en los perfiles. |
 | `SmoothSkinEffect` | Opción | `OFF` | - | `OFF` | Solo aparece `OFF` en los ejemplos; valores activos quedan pendientes. |
 | `BlackImageTone` | Número | `-18`,`18` | 1 | `0` | Tono monocromático (solo vale en peliculas especificas) |
 | `MonochromaticColor_RG` | Número | `-18`,`18` | 1 | `0` | Color monocromático (solo vale en peliculas especificas ) |

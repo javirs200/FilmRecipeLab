@@ -8,9 +8,13 @@ Cada release usa únicamente el contenido situado bajo el encabezado cuya versi�
 - El selector de simulación muestra los nombres visibles de Fujifilm en lugar de los códigos internos del XML. La aplicación sigue guardando los códigos FP1 correspondientes.
 - Corregida la presentación del valor seleccionado en el selector de simulación: ahora muestra la etiqueta visible y no el nombre interno del objeto.
 - Reorganizado el editor para separar mejor las etiquetas de los controles de la columna contigua.
+- Agrupados el modo, la temperatura Kelvin y los desplazamientos rojo/azul en la sección de balance de blancos.
+- `Temperature` se muestra como `Kelvin fijo (Fixed Kelvin)` y los ajustes de desplazamiento se identifican como `WB Shift R` y `WB Shift B`.
+
 ### Añadido 
 - Añadida la creación de recetas X-T50 desde cero con valores iniciales FP1.
 - Un borrador nuevo aparece como pendiente de guardar; `Guardar copia nueva` crea su primer archivo sin generar una entrada duplicada.
+- Añadidos controles para `Color Chrome FX` y `Color Chrome FX Blue` con niveles `OFF`, `WEAK` y `STRONG`.
 
 ## 1.1
 

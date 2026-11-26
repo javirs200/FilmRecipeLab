@@ -15,7 +15,7 @@
 
     <AssemblyName>FilmRecipeLab</AssemblyName>
     <Product>FilmRecipe Lab</Product>
-    <Version>1.1</Version>
+    <Version>1.2</Version>
     <Description>Gestor de perfiles y recetas Fujifilm X-T50 para RAW Studio.</Description>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
