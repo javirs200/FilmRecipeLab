@@ -2,7 +2,7 @@
 
 Aplicación de escritorio para Windows 11 destinada a gestionar, editar y exportar recetas de la Fujifilm X-T50 almacenadas en perfiles `.FP1` de Fujifilm RAW Studio.
 
-**Versión actual: 1.0**
+**Versión actual: 1.1**
 
 El proyecto está limitado intencionadamente a la X-T50. No busca soportar otras cámaras Fujifilm.
 
