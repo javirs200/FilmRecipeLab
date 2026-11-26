@@ -194,7 +194,7 @@ public sealed class XT50Recipe : INotifyPropertyChanged
     {
         "Provia", "Velvia", "Astia", "Classic", "Reala", "NEGAhi", "NEGAStd",
         "ClassicNEGA", "NostalgicNEGA", "Eterna", "BleachBypass", "Acros", "AcrosYe",
-        "AcrosG", "AcrosR", "BW", "BYe", "BG", "Sepia"
+        "AcrosG", "AcrosR", "BW", "BR", "BYe", "BG", "Sepia"
     };
 
     public static readonly IReadOnlySet<string> WhiteBalanceCodes = new HashSet<string>(StringComparer.Ordinal)

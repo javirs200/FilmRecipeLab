@@ -17,7 +17,29 @@ public partial class MainWindow : Window
         "com.fujifilm.denji",
         "X_RAW_STUDIO");
 
-    public static IReadOnlyList<string> FilmSimulationCodes => XT50Recipe.FilmSimulationCodes.ToArray();
+    public static IReadOnlyList<FilmSimulationOption> FilmSimulations { get; } =
+    [
+        new("Provia", "Provia (Standard)"),
+        new("Velvia", "Velvia (Vivid)"),
+        new("Astia", "Astia (Soft)"),
+        new("Classic", "Classic Chrome"),
+        new("Reala", "Reala Ace"),
+        new("ClassicNEGA", "Classic Negative"),
+        new("NostalgicNEGA", "Nostalgic Neg."),
+        new("Eterna", "Eterna (Cinema)"),
+        new("BleachBypass", "Eterna Bleach Bypass"),
+        new("NEGAhi", "PRO Neg. Hi"),
+        new("NEGAStd", "PRO Neg. Std"),
+        new("Acros", "Acros (Standard)"),
+        new("AcrosR", "Acros Red"),
+        new("AcrosYe", "Acros Yellow"),
+        new("AcrosG", "Acros Green"),
+        new("BW", "Monochrome (Standard)"),
+        new("BR", "Monochrome Red"),
+        new("BYe", "Monochrome Yellow"),
+        new("BG", "Monochrome Green"),
+        new("Sepia", "Sepia")
+    ];
 
     public static IReadOnlyList<string> WhiteBalanceCodes => XT50Recipe.WhiteBalanceCodes.ToArray();
 

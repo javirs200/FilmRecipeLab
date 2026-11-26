@@ -96,91 +96,97 @@
                     <GroupBox Header="Película y exposición" Margin="0,0,0,12">
                         <Grid Margin="12">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="180" />
+                                <ColumnDefinition Width="160" />
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="180" />
+                                <ColumnDefinition Width="28" />
+                                <ColumnDefinition Width="160" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Simulación" VerticalAlignment="Center" />
-                            <ComboBox Grid.Column="1" ItemsSource="{x:Static local:MainWindow.FilmSimulationCodes}" SelectedItem="{Binding FilmSimulation}" />
-                            <TextBlock Grid.Column="2" Text="Rango dinámico" VerticalAlignment="Center" />
-                            <ComboBox Grid.Column="3" ItemsSource="{x:Static local:MainWindow.DynamicRanges}" SelectedItem="{Binding DynamicRange}" />
-                            <TextBlock Grid.Row="1" Text="Exposure bias" VerticalAlignment="Center" />
+                            <TextBlock Text="Simulación" VerticalAlignment="Center" Margin="0,0,12,0" />
+                            <ComboBox Grid.Column="1"
+                                      ItemsSource="{x:Static local:MainWindow.FilmSimulations}"
+                                      DisplayMemberPath="Label"
+                                      SelectedValuePath="Code"
+                                      SelectedValue="{Binding FilmSimulation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Grid.Column="3" Text="Rango dinámico" VerticalAlignment="Center" Margin="8,0,12,0" />
+                            <ComboBox Grid.Column="4" ItemsSource="{x:Static local:MainWindow.DynamicRanges}" SelectedItem="{Binding DynamicRange}" />
+                            <TextBlock Grid.Row="1" Text="Exposure bias" VerticalAlignment="Center" Margin="0,0,12,0" />
                             <StackPanel Grid.Row="1" Grid.Column="1">
                                 <Slider Minimum="-2" Maximum="3" TickFrequency="0.333333" IsSnapToTickEnabled="True" Value="{Binding ExposureBias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
                                 <TextBlock Text="{Binding ExposureBias, Converter={StaticResource ExposureBiasDisplayConverter}}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <TextBlock Grid.Row="1" Grid.Column="2" Text="Balance blancos" VerticalAlignment="Center" />
-                            <ComboBox Grid.Row="1" Grid.Column="3" ItemsSource="{x:Static local:MainWindow.WhiteBalanceCodes}" SelectedItem="{Binding WhiteBalance}" />
+                            <TextBlock Grid.Row="1" Grid.Column="3" Text="Balance blancos" VerticalAlignment="Center" Margin="8,0,12,0" />
+                            <ComboBox Grid.Row="1" Grid.Column="4" ItemsSource="{x:Static local:MainWindow.WhiteBalanceCodes}" SelectedItem="{Binding WhiteBalance}" />
                         </Grid>
                     </GroupBox>
 
                     <GroupBox Header="Ajustes de imagen">
                         <Grid Margin="12">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="180" />
+                                <ColumnDefinition Width="160" />
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="180" />
+                                <ColumnDefinition Width="28" />
+                                <ColumnDefinition Width="160" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition /><RowDefinition /><RowDefinition /><RowDefinition /><RowDefinition /><RowDefinition />
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Altas luces" VerticalAlignment="Center" />
+                            <TextBlock Text="Altas luces" VerticalAlignment="Center" Margin="0,0,12,0" />
                             <StackPanel Grid.Column="1">
                                 <Slider Minimum="-2" Maximum="4" TickFrequency="0.5" IsSnapToTickEnabled="True" Value="{Binding HighlightTone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
                                 <TextBlock Text="{Binding HighlightTone, StringFormat={}{0:0.##}}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <TextBlock Grid.Column="2" Text="Sombras" VerticalAlignment="Center" />
-                            <StackPanel Grid.Column="3">
+                            <TextBlock Grid.Column="3" Text="Sombras" VerticalAlignment="Center" Margin="8,0,12,0" />
+                            <StackPanel Grid.Column="4">
                                 <Slider Minimum="-2" Maximum="4" TickFrequency="0.5" IsSnapToTickEnabled="True" Value="{Binding ShadowTone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
                                 <TextBlock Text="{Binding ShadowTone, StringFormat={}{0:0.##}}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <TextBlock Grid.Row="1" Text="Color" VerticalAlignment="Center" />
+                            <TextBlock Grid.Row="1" Text="Color" VerticalAlignment="Center" Margin="0,0,12,0" />
                             <StackPanel Grid.Row="1" Grid.Column="1">
                                 <Slider Minimum="-4" Maximum="4" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
                                 <TextBlock Text="{Binding Color}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <TextBlock Grid.Row="1" Grid.Column="2" Text="Nitidez" VerticalAlignment="Center" />
-                            <StackPanel Grid.Row="1" Grid.Column="3">
+                            <TextBlock Grid.Row="1" Grid.Column="3" Text="Nitidez" VerticalAlignment="Center" Margin="8,0,12,0" />
+                            <StackPanel Grid.Row="1" Grid.Column="4">
                                 <Slider Minimum="-4" Maximum="4" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding Sharpness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
                                 <TextBlock Text="{Binding Sharpness}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <TextBlock Grid.Row="2" Text="Reducción ruido" VerticalAlignment="Center" />
+                            <TextBlock Grid.Row="2" Text="Reducción ruido" VerticalAlignment="Center" Margin="0,0,12,0" />
                             <StackPanel Grid.Row="2" Grid.Column="1">
                                 <Slider Minimum="-4" Maximum="4" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding NoiseReduction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
                                 <TextBlock Text="{Binding NoiseReduction}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <TextBlock Grid.Row="2" Grid.Column="2" Text="Claridad" VerticalAlignment="Center" />
-                            <StackPanel Grid.Row="2" Grid.Column="3">
+                            <TextBlock Grid.Row="2" Grid.Column="3" Text="Claridad" VerticalAlignment="Center" Margin="8,0,12,0" />
+                            <StackPanel Grid.Row="2" Grid.Column="4">
                                 <Slider Minimum="-5" Maximum="5" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding Clarity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
                                 <TextBlock Text="{Binding Clarity}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <TextBlock Grid.Row="3" Text="Desplazamiento R" VerticalAlignment="Center" />
+                            <TextBlock Grid.Row="3" Text="Desplazamiento R" VerticalAlignment="Center" Margin="0,0,12,0" />
                             <StackPanel Grid.Row="3" Grid.Column="1">
                                 <Slider Minimum="-9" Maximum="9" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding WhiteBalanceShiftRed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
                                 <TextBlock Text="{Binding WhiteBalanceShiftRed}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <TextBlock Grid.Row="3" Grid.Column="2" Text="Desplazamiento B" VerticalAlignment="Center" />
-                            <StackPanel Grid.Row="3" Grid.Column="3">
+                            <TextBlock Grid.Row="3" Grid.Column="3" Text="Desplazamiento B" VerticalAlignment="Center" Margin="8,0,12,0" />
+                            <StackPanel Grid.Row="3" Grid.Column="4">
                                 <Slider Minimum="-9" Maximum="9" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding WhiteBalanceShiftBlue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
                                 <TextBlock Text="{Binding WhiteBalanceShiftBlue}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <TextBlock Grid.Row="4" Text="Temperatura (K)" VerticalAlignment="Center" />
+                            <TextBlock Grid.Row="4" Text="Temperatura (K)" VerticalAlignment="Center" Margin="0,0,12,0" />
                             <StackPanel Grid.Row="4" Grid.Column="1">
                                 <Slider Minimum="0" Maximum="10000" TickFrequency="100" IsSnapToTickEnabled="True" Value="{Binding WhiteBalanceColorTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
                                 <TextBlock Text="{Binding WhiteBalanceColorTemperature, StringFormat={}{0} K}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <TextBlock Grid.Row="4" Grid.Column="2" Text="Espacio de color" VerticalAlignment="Center" />
-                            <ComboBox Grid.Row="4" Grid.Column="3" ItemsSource="{x:Static local:MainWindow.ColorSpaces}" SelectedItem="{Binding ColorSpace}" />
-                            <TextBlock Grid.Row="5" Text="Efecto grano" VerticalAlignment="Center" />
+                            <TextBlock Grid.Row="4" Grid.Column="3" Text="Espacio de color" VerticalAlignment="Center" Margin="8,0,12,0" />
+                            <ComboBox Grid.Row="4" Grid.Column="4" ItemsSource="{x:Static local:MainWindow.ColorSpaces}" SelectedItem="{Binding ColorSpace}" />
+                            <TextBlock Grid.Row="5" Text="Efecto grano" VerticalAlignment="Center" Margin="0,0,12,0" />
                             <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{x:Static local:MainWindow.GrainEffects}" SelectedItem="{Binding GrainEffect}" />
-                            <TextBlock Grid.Row="5" Grid.Column="2" Text="Tamaño grano" VerticalAlignment="Center" />
-                            <ComboBox Grid.Row="5" Grid.Column="3" ItemsSource="{x:Static local:MainWindow.GrainSizes}" SelectedItem="{Binding GrainEffectSize}" />
+                            <TextBlock Grid.Row="5" Grid.Column="3" Text="Tamaño grano" VerticalAlignment="Center" Margin="8,0,12,0" />
+                            <ComboBox Grid.Row="5" Grid.Column="4" ItemsSource="{x:Static local:MainWindow.GrainSizes}" SelectedItem="{Binding GrainEffectSize}" />
                         </Grid>
                     </GroupBox>
                 </StackPanel>
