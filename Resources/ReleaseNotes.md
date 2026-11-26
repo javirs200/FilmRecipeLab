@@ -2,6 +2,12 @@
 
 Cada release usa únicamente el contenido situado bajo el encabezado cuya versión coincide con el input del workflow. Añade una nueva sección por versión antes de publicar.
 
+## 1.2
+
+### Mejorado
+- El selector de simulación muestra los nombres visibles de Fujifilm en lugar de los códigos internos del XML. La aplicación sigue guardando los códigos FP1 correspondientes.
+- Reorganizado el editor para separar mejor las etiquetas de los controles de la columna contigua.
+
 ## 1.1
 
 ### Añadido 
