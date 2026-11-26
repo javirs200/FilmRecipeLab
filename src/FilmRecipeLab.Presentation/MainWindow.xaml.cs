@@ -29,11 +29,15 @@ public partial class MainWindow : Window
 
     public static IReadOnlyList<string> GrainSizes { get; } = new[] { "SMALL", "LARGE" };
 
+    public static string ApplicationVersion =>
+        $"v{typeof(MainWindow).Assembly.GetName().Version?.ToString(2) ?? throw new InvalidOperationException("La aplicación no tiene una versión configurada.")}";
+
     private readonly MainWindowViewModel viewModel = new();
 
     public MainWindow()
     {
         InitializeComponent();
+        Title = $"FilmRecipe Lab {ApplicationVersion}";
         DataContext = viewModel;
         viewModel.ScanConfiguredFolderIfAvailable();
     }

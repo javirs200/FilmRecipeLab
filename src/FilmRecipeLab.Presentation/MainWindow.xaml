@@ -15,6 +15,12 @@
     <DockPanel Margin="18" Background="{StaticResource AppBackgroundBrush}">
         <Border DockPanel.Dock="Top" Background="#26313D" CornerRadius="6" Padding="14" Margin="0,0,0,14">
             <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                    <TextBlock Text="FilmRecipe Lab" FontSize="18" FontWeight="SemiBold" Foreground="White" VerticalAlignment="Center" />
+                    <Border Background="#354557" CornerRadius="9" Padding="8,3" Margin="10,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="{x:Static local:MainWindow.ApplicationVersion}" Foreground="#C4CED8" FontSize="11" />
+                    </Border>
+                </StackPanel>
                 <DockPanel>
                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
                         <Button Content="Guardar copia nueva" Click="SaveCopy_Click" Padding="14,8" Margin="0,0,8,0" />
