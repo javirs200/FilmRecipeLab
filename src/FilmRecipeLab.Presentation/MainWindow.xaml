@@ -120,8 +120,43 @@
                                 <Slider Minimum="-2" Maximum="3" TickFrequency="0.333333" IsSnapToTickEnabled="True" Value="{Binding ExposureBias, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
                                 <TextBlock Text="{Binding ExposureBias, Converter={StaticResource ExposureBiasDisplayConverter}}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <TextBlock Grid.Row="1" Grid.Column="3" Text="Balance blancos" VerticalAlignment="Center" Margin="8,0,12,0" />
-                            <ComboBox Grid.Row="1" Grid.Column="4" ItemsSource="{x:Static local:MainWindow.WhiteBalanceCodes}" SelectedItem="{Binding WhiteBalance}" />
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Header="Balance de blancos (White Balance)" Margin="0,0,0,12">
+                        <Grid Margin="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="28" />
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Modo" VerticalAlignment="Center" Margin="0,0,12,0" />
+                            <ComboBox Grid.Column="1"
+                                      ItemsSource="{x:Static local:MainWindow.WhiteBalanceOptions}"
+                                      DisplayMemberPath="Label"
+                                      SelectedValuePath="Code"
+                                      SelectedValue="{Binding WhiteBalance, Mode=TwoWay}" />
+                            <TextBlock Grid.Column="3" Text="Temperatura (WB Kelvin)" VerticalAlignment="Center" Margin="8,0,12,0" />
+                            <StackPanel Grid.Column="4">
+                                <Slider Minimum="0" Maximum="10000" TickFrequency="100" IsSnapToTickEnabled="True" Value="{Binding WhiteBalanceColorTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
+                                <TextBlock Text="{Binding WhiteBalanceColorTemperature, StringFormat={}{0} K}" HorizontalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Grid.Row="1" Text="WB Shift R (rojo)" VerticalAlignment="Center" Margin="0,0,12,0" />
+                            <StackPanel Grid.Row="1" Grid.Column="1">
+                                <Slider Minimum="-9" Maximum="9" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding WhiteBalanceShiftRed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
+                                <TextBlock Text="{Binding WhiteBalanceShiftRed}" HorizontalAlignment="Center" />
+                            </StackPanel>
+                            <TextBlock Grid.Row="1" Grid.Column="3" Text="WB Shift B (azul)" VerticalAlignment="Center" Margin="8,0,12,0" />
+                            <StackPanel Grid.Row="1" Grid.Column="4">
+                                <Slider Minimum="-9" Maximum="9" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding WhiteBalanceShiftBlue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
+                                <TextBlock Text="{Binding WhiteBalanceShiftBlue}" HorizontalAlignment="Center" />
+                            </StackPanel>
                         </Grid>
                     </GroupBox>
 
@@ -135,7 +170,7 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition /><RowDefinition /><RowDefinition /><RowDefinition /><RowDefinition /><RowDefinition />
+                                <RowDefinition /><RowDefinition /><RowDefinition /><RowDefinition />
                             </Grid.RowDefinitions>
                             <TextBlock Text="Altas luces" VerticalAlignment="Center" Margin="0,0,12,0" />
                             <StackPanel Grid.Column="1">
@@ -167,27 +202,32 @@
                                 <Slider Minimum="-5" Maximum="5" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding Clarity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
                                 <TextBlock Text="{Binding Clarity}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <TextBlock Grid.Row="3" Text="Desplazamiento R" VerticalAlignment="Center" Margin="0,0,12,0" />
-                            <StackPanel Grid.Row="3" Grid.Column="1">
-                                <Slider Minimum="-9" Maximum="9" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding WhiteBalanceShiftRed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
-                                <TextBlock Text="{Binding WhiteBalanceShiftRed}" HorizontalAlignment="Center" />
-                            </StackPanel>
-                            <TextBlock Grid.Row="3" Grid.Column="3" Text="Desplazamiento B" VerticalAlignment="Center" Margin="8,0,12,0" />
-                            <StackPanel Grid.Row="3" Grid.Column="4">
-                                <Slider Minimum="-9" Maximum="9" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding WhiteBalanceShiftBlue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
-                                <TextBlock Text="{Binding WhiteBalanceShiftBlue}" HorizontalAlignment="Center" />
-                            </StackPanel>
-                            <TextBlock Grid.Row="4" Text="Temperatura (K)" VerticalAlignment="Center" Margin="0,0,12,0" />
-                            <StackPanel Grid.Row="4" Grid.Column="1">
-                                <Slider Minimum="0" Maximum="10000" TickFrequency="100" IsSnapToTickEnabled="True" Value="{Binding WhiteBalanceColorTemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource NumericValueConverter}}" />
-                                <TextBlock Text="{Binding WhiteBalanceColorTemperature, StringFormat={}{0} K}" HorizontalAlignment="Center" />
-                            </StackPanel>
-                            <TextBlock Grid.Row="4" Grid.Column="3" Text="Espacio de color" VerticalAlignment="Center" Margin="8,0,12,0" />
-                            <ComboBox Grid.Row="4" Grid.Column="4" ItemsSource="{x:Static local:MainWindow.ColorSpaces}" SelectedItem="{Binding ColorSpace}" />
-                            <TextBlock Grid.Row="5" Text="Efecto grano" VerticalAlignment="Center" Margin="0,0,12,0" />
-                            <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{x:Static local:MainWindow.GrainEffects}" SelectedItem="{Binding GrainEffect}" />
-                            <TextBlock Grid.Row="5" Grid.Column="3" Text="Tamaño grano" VerticalAlignment="Center" Margin="8,0,12,0" />
-                            <ComboBox Grid.Row="5" Grid.Column="4" ItemsSource="{x:Static local:MainWindow.GrainSizes}" SelectedItem="{Binding GrainEffectSize}" />
+                            <TextBlock Grid.Row="3" Text="Espacio de color" VerticalAlignment="Center" Margin="0,0,12,0" />
+                            <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{x:Static local:MainWindow.ColorSpaces}" SelectedItem="{Binding ColorSpace}" />
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Header="Efectos de imagen" Margin="0,12,0,0">
+                        <Grid Margin="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="28" />
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Efecto grano" VerticalAlignment="Center" Margin="0,0,12,0" />
+                            <ComboBox Grid.Column="1" ItemsSource="{x:Static local:MainWindow.GrainEffects}" SelectedItem="{Binding GrainEffect}" />
+                            <TextBlock Grid.Column="3" Text="Tamaño grano" VerticalAlignment="Center" Margin="8,0,12,0" />
+                            <ComboBox Grid.Column="4" ItemsSource="{x:Static local:MainWindow.GrainSizes}" SelectedItem="{Binding GrainEffectSize}" />
+                            <TextBlock Grid.Row="1" Text="Color Chrome FX" VerticalAlignment="Center" Margin="0,0,12,0" ToolTip="Efecto Color Chrome" />
+                            <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{x:Static local:MainWindow.ChromeEffectLevels}" SelectedItem="{Binding ChromeEffect}" />
+                            <TextBlock Grid.Row="1" Grid.Column="3" Text="Color Chrome FX Blue" VerticalAlignment="Center" Margin="8,0,12,0" ToolTip="Efecto Color Chrome azul" />
+                            <ComboBox Grid.Row="1" Grid.Column="4" ItemsSource="{x:Static local:MainWindow.ChromeEffectLevels}" SelectedItem="{Binding ColorChromeBlue}" />
                         </Grid>
                     </GroupBox>
                 </StackPanel>

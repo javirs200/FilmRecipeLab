@@ -41,13 +41,20 @@ public partial class MainWindow : Window
         new("Sepia", "Sepia")
     ];
 
-    public static IReadOnlyList<string> WhiteBalanceCodes => XT50Recipe.WhiteBalanceCodes.ToArray();
+    public static IReadOnlyList<WhiteBalanceOption> WhiteBalanceOptions { get; } =
+        XT50Recipe.WhiteBalanceCodes
+            .Select(code => new WhiteBalanceOption(
+                code,
+                code == "Temperature" ? "Kelvin fijo (Fixed Kelvin)" : code))
+            .ToArray();
 
     public static IReadOnlyList<string> DynamicRanges { get; } = new[] { "100", "200", "400" };
 
     public static IReadOnlyList<string> ColorSpaces { get; } = new[] { "sRGB", "AdobeRGB" };
 
     public static IReadOnlyList<string> GrainEffects { get; } = new[] { "OFF", "STRONG", "WEAK" };
+
+    public static IReadOnlyList<string> ChromeEffectLevels { get; } = new[] { "OFF", "WEAK", "STRONG" };
 
     public static IReadOnlyList<string> GrainSizes { get; } = new[] { "SMALL", "LARGE" };
 
