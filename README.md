@@ -2,6 +2,8 @@
 
 Aplicación de escritorio para Windows 11 destinada a gestionar, editar y exportar recetas de la Fujifilm X-T50 almacenadas en perfiles `.FP1` de Fujifilm RAW Studio.
 
+**Versión actual: 1.0**
+
 El proyecto está limitado intencionadamente a la X-T50. No busca soportar otras cámaras Fujifilm.
 
 ## Estado actual
@@ -24,7 +26,7 @@ El proyecto está limitado intencionadamente a la X-T50. No busca soportar otras
 
 ## Vista Previa
 
-![Vista Previa](docs/screenshots/Main-Window.png)
+![FilmRecipe Lab 1.0](docs/screenshots/Main-Window.png)
 
 ## Uso
 
@@ -95,6 +97,14 @@ Para publicar desde PowerShell:
 ```powershell
 dotnet publish src/FilmRecipeLab.Presentation/FilmRecipeLab.Presentation.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true -o publish/FilmRecipeLab
 ```
+
+## Crear una release desde GitHub
+
+1. Abre la pestaña **Actions** del repositorio y selecciona **Crear release**.
+2. Pulsa **Run workflow**, elige la rama y escribe la versión (por ejemplo, `1.0`).
+3. Pulsa **Run workflow** para ejecutar las pruebas, publicar el ejecutable autónomo y crear una release con la etiqueta `v1.0`.
+
+El archivo `FilmRecipeLab.exe` quedará adjunto a la release. Usa una versión nueva para cada publicación.
 
 ## Alcance pendiente
 
