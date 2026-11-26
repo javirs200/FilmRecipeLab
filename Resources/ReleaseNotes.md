@@ -2,6 +2,16 @@
 
 Cada release usa únicamente el contenido situado bajo el encabezado cuya versión coincide con el input del workflow. Añade una nueva sección por versión antes de publicar.
 
+## 1.3
+
+### Añadido
+- Añadidos controles para `Color Chrome FX` y `Color Chrome FX Blue`, con niveles `OFF`, `WEAK` y `STRONG`.
+- Agrupados el modo, la temperatura Kelvin y los desplazamientos rojo/azul en la sección de balance de blancos.
+
+### Mejorado
+- `Temperature` se muestra como `Kelvin fijo (Fixed Kelvin)` y los ajustes de desplazamiento se identifican como `WB Shift R` y `WB Shift B`.
+- El selector de balance de blancos muestra la etiqueta visible en lugar de la representación interna de la opción.
+
 ## 1.2
 
 ### Mejorado

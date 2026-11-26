@@ -2,7 +2,7 @@
 
 Aplicación de escritorio para Windows 11 destinada a gestionar, editar y exportar recetas de la Fujifilm X-T50 almacenadas en perfiles `.FP1` de Fujifilm RAW Studio.
 
-**Versión actual: 1.2**
+**Versión actual: 1.3**
 
 El proyecto está limitado intencionadamente a la X-T50. No busca soportar otras cámaras Fujifilm.
 
@@ -18,6 +18,9 @@ El proyecto está limitado intencionadamente a la X-T50. No busca soportar otras
 - Ruta predeterminada de RAW STUDIO: `%LOCALAPPDATA%\com.fujifilm.denji\X_RAW_STUDIO\X-T50\X-T50_0100`.
 - Recarga manual de perfiles externos mediante el botón con icono de actualizar.
 - Edición visual mediante controles deslizantes y campos opcionales.
+- Balance de blancos agrupado con temperatura Kelvin y desplazamientos `WB Shift R` y `WB Shift B`.
+- `Temperature` se muestra como `Kelvin fijo (Fixed Kelvin)` para asociarlo con recetas externas.
+- Controles para `Color Chrome FX` y `Color Chrome FX Blue`, con niveles `OFF`, `WEAK` y `STRONG`.
 - `ExposureBias` mostrado como fracciones como `1/3`, `2/3` o `1 1/3`, mientras se conserva internamente como valor decimal.
 - Lista que muestra nombre y archivo `.FP1` asociado.
 - Marca azul en las recetas con cambios pendientes de actualizar o guardar.
@@ -27,7 +30,7 @@ El proyecto está limitado intencionadamente a la X-T50. No busca soportar otras
 
 ## Vista Previa
 
-![FilmRecipe Lab 1.0](docs/screenshots/Main-Window.png)
+![FilmRecipe Lab 1.3](docs/screenshots/Main-Window.png)
 
 ## Uso
 
@@ -106,8 +109,8 @@ dotnet publish src/FilmRecipeLab.Presentation/FilmRecipeLab.Presentation.csproj 
 
 1. Añade en `Resources/ReleaseNotes.md` un apartado `## X.Y` con los cambios de esa versión.
 2. Abre la pestaña **Actions** del repositorio y selecciona **Crear release**.
-3. Pulsa **Run workflow**, elige la rama y escribe la versión sin prefijo `v` (por ejemplo, `1.1`).
-4. Pulsa **Run workflow** para ejecutar las pruebas, publicar el ejecutable autónomo y crear una release con la etiqueta `v1.1`.
+3. Pulsa **Run workflow**, elige la rama y escribe la versión sin prefijo `v` (por ejemplo, `1.3`).
+4. Pulsa **Run workflow** para ejecutar las pruebas, publicar el ejecutable autónomo y crear una release con la etiqueta `v1.3`.
 
 El body de cada release se extrae de su sección correspondiente en `Resources/ReleaseNotes.md`; si no existe o está vacía, el workflow falla antes de crear la release. El archivo `FilmRecipeLab.exe` quedará adjunto. Usa una sección y una versión nuevas para cada publicación.
 
